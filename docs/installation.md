@@ -67,15 +67,20 @@ Firstly, make sure you have the following programms installed on your laptop:
 1. **Plug the device into the laptop using the USB-cable**
 2. **Open the MINI-KEYBOARD.exe from the WIN TOOL EN folder** (See table on top of page for the folder download link)
 3. **Check whether the correct keys are mapped on the keypad**
-   - The correct keys should be mapped on the visual keypad, make sure you to check this with the image of the correct mapping below
+   - The correct keys should be mapped on the visual keypad, make sure you to check this with the image of the correct mapping below.
+   - For the first time, you should probably map the correct keys to the corresponding keypad buttons. Click on a button from the keypad in the program (top part of the screen) and then click the correct key on the keyboard on the lower half of the screen. Once done for all keys and knobs, press download.
    <img width="977" height="480" alt="Screenshot 2026-07-08 113421" src="https://github.com/user-attachments/assets/55fab625-6177-41b3-a902-f0e1454cbad8" />
+   - If you have downloaded the mapping as shown above, you can close the program
 4. **Check whether the keypad works on your laptop**
    - On a place where you can type (e.g. open a notepad file), test whether pressing the keys leads to the expected keypad symbols being inserted (e.g. bottom left key prints a 4).
 5. **Check whether the keypad plays audio on the dashboard**
    - On the dashboard in your browser, start a session and press the keys one by one. Make sure the audio of your laptop is on and check if you hear the sound.
 
 ### **5️⃣ Set up the Router**
+Now we will be connection the haptics and visual components. These require WiFi to connect to the laptop, so we need to make sure they are all connected to the same WiFi network and can find each other's IP addresses.
 1. **Turn on the Router**
+   - Plug the router in a power socket and press the on button
+   - Wait a couple of seconds for the router to start up
 3. **Connect the laptop to the router's WiFi**
   - Check the IP address of the laptop on the WiFi, this should be...
 5. **Connect the iPad to the router's WiFi**
