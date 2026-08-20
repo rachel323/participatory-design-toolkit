@@ -3,6 +3,7 @@ const router = express.Router();
 
 router.post("/:id/vibrate", async (req, res) => {
 
+    //check the IP addresses from the ESP's on the WiFi
     const motors = {
         1: "192.168.1.155",
         2: "192.168.1.102",
