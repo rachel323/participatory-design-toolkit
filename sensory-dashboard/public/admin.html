@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin - Geluiden Beheren</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Admin - Geluiden Beheren</h1>
+
+        <div class="section">
+            <h2>🔄 Geluid Vervangen</h2>
+            <form id="replaceSoundForm" enctype="multipart/form-data">
+                <label for="soundType">Type:</label>
+                <select id="soundType" name="soundType" required>
+                    <option value="music">Muziek</option>
+                    <option value="sfx">Sound Effects</option>
+                </select>
+
+                <label for="soundId">Kies geluid om te vervangen:</label>
+                <select id="soundId" name="soundId" required>
+                    <!-- Opties worden dynamisch geladen -->
+                </select>
+
+                <br><br>
+                
+                <label for="soundFile">Nieuw geluidsbestand:</label>
+                <input type="file" id="soundFile" name="soundFile" accept="audio/*" required>
+                
+                <br><br>
+
+                <label for="adminPassword">Admin Wachtwoord:</label>
+                <input type="password" id="adminPassword" name="adminPassword" required>   
+
+                <button type="submit">Vervang Geluid</button>
+            </form>
+            <div id="status"></div>
+        </div>
+
+        <div class="section">
+            <h2>🔙 Terug naar Dashboard</h2>
+            <a href="/">
+                <button type="button">Terug naar Welkomspagina</button>
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // Load the list with current sounds
+        async function loadSoundList() {
+            try {
+                const response = await fetch('/api/sound/list');
+                const sounds = await response.json();
+
+                const soundTypeSelect = document.getElementById('soundType');
+                const soundIdSelect = document.getElementById('soundId');
+
+                soundTypeSelect.addEventListener('change', () => {
+                    updateSoundDropdown(sounds, soundTypeSelect.value);
+                });
+
+                updateSoundDropdown(sounds, soundTypeSelect.value);
+            } catch (error) {
+                showStatus('Fout bij laden van geluiden: ' + error.message, 'error');
+            }
+        }
+
+        // Make the dropdown with the sounds
+        function updateSoundDropdown(sounds, type) {
+            const soundIdSelect = document.getElementById('soundId');
+            soundIdSelect.innerHTML = '';
+
+            const soundList = type === 'music' ? sounds.music : sounds.sfx;
+
+            soundList.forEach(sound => {
+                const option = document.createElement('option');
+                option.value = sound.id;
+                option.textContent = sound.name;
+                soundIdSelect.appendChild(option);
+            });
+        }
+
+        // Toon statusberichten
+        function showStatus(message, type) {
+            const statusDiv = document.getElementById('status');
+            statusDiv.textContent = message;
+            statusDiv.className = type;
+        }
+
+        //handle the substituion of a sound
+        document.getElementById('replaceSoundForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        // Maak een FormData-object aan
+        const formData = new FormData(e.target);
+
+        // Voeg handmatig het geselecteerde soundId toe (omdat het niet in het formulier staat als input)
+        const soundId = document.getElementById('soundId').value;
+        formData.append('soundId', soundId);
+
+        try {
+            const response = await fetch('/api/sound/replace', {
+            method: 'POST',
+            body: formData,
+            });
+
+            const result = await response.json();
+            if (result.success) {
+            showStatus(`✅ Geluid vervangen: ${result.message}`, 'success');
+            } else {
+            showStatus('❌ Fout: ' + (result.error || 'Onbekend'), 'error');
+            }
+        } catch (error) {
+            showStatus('❌ Upload mislukt: ' + error.message, 'error');
+        }
+        });
+
+        // Laad geluiden bij het laden van de pagina
+        document.addEventListener('DOMContentLoaded', loadSoundList);
+    </script>
+</body>
+</html>

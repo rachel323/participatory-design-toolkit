@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Wizard Control Dashboard</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <h1>Wizard Control Dashboard</h1>
+    <form action="/stop-session" method="POST" style="text-align: right;">
+        <button type="submit" class="stop-button">Stop Sessie</button>
+    </form>
+
+    <!-- WLED Controls -->
+    <div class="section">
+        <h2>LED Strip</h2>
+        <button onclick="sendWLEDCommand('on', 'LED AAN')">On</button>
+        <button onclick="sendWLEDCommand('off', 'LED UIT')">Off</button>
+        <input type="color" id="ledColor" value="#ff0000">
+        <button onclick="setLEDColor()">Set colour</button>
+        <input type="range" id="brightness" min="0" max="255" value="128">
+        <button onclick="setLEDBrightness()">Brightness</button>
+
+        <div class="subsection">
+            <h3>Effects</h3>
+            <!--There are more effects via: https://kno.wled.ge/interfaces/json-api/ 
+            to add more effects find which number it is from their effects list and add the setLEDEffect-->
+            <button onclick="setLEDEffect(0)">Solid</button>
+            <button onclick="setLEDEffect(2)">Breathe</button>
+            <button onclick="setLEDEffect(3)">Wipe</button>
+            <button onclick="setLEDEffect(20)">Sparkle</button>
+            <button onclick="setLEDEffect(25)">Strobe</button>
+            <button onclick="setLEDEffect(74)">Colortwinkle</button>
+            <button onclick="setLEDEffect(9)">Rainbow</button>
+        </div>
+    </div>
+
+    <!-- Sound Controls -->
+    <div class="section">
+        <h2>Sound</h2>
+        <!-- make sure the correct soundfiles are in the 'sounds' folder in the project 
+         also check this at the KEYMAP section below for sounds triggered by keys-->
+        <div class="subsection">
+            <h3>Music</h3>
+            <button data-file="/sounds/bg_jazz.mp3" onclick="playMusic('/sounds/bg_jazz.mp3', this)">Jazz</button>
+            <button data-file="/sounds/bg_classical.wav" onclick="playMusic('/sounds/bg_classical.wav', this)">Impressionistic</button>
+            <button data-file="/sounds/bg_sitar.mp3" onclick="playMusic('/sounds/bg_sitar.mp3', this)">Sitar</button>
+            <button data-file="/sounds/bg_mystery-bells.mp3" onclick="playMusic('/sounds/bg_mystery-bells.mp3', this)">Mystery</button>
+            <button data-file="/sounds/bg_happy-upbeat.mp3" onclick="playMusic('/sounds/bg_happy-upbeat.mp3', this)">Happy</button>
+            <button data-file="/sounds/bg_action.mp3" onclick="playMusic('/sounds/bg_action.mp3', this)">Action</button>
+        </div>
+
+        <div class="subsection">
+            <h3>Music adjustments</h3>
+            <p>Playback Rate: <span id="playbackValue">1.00</span>
+            &emsp; Low-pass: <span id="lowpassValue">20000</span> Hz
+            &emsp; High-pass: <span id="highpassValue">20</span> Hz</p>
+        </div>
+
+        <div class="subsection">
+            <h3>Sound effects</h3>
+            <button onclick="playSfx('/sounds/sfx_pling.wav', this)">Pling</button>
+            <button onclick="playSfx('/sounds/sfx_plop.mp3', this)">Plop</button>
+            <button onclick="playSfx('/sounds/sfx_honk.wav', this)">Honk</button>
+            <button onclick="playSfx('/sounds/sfx_whoosh.mp3', this)">Whoosh</button>
+            <button onclick="playSfx('/sounds/sfx_spring.mp3', this)">Spring</button>
+            <button onclick="playSfx('/sounds/sfx_drum.wav', this)">Drum</button>
+        </div>
+
+        
+    </div>
+
+    <!-- Haptics Controls -->
+    <div class="section">
+            <h2>Haptics</h2>
+
+            <button onclick="vibrateMotor(1)">Motor 1</button>
+            <button onclick="vibrateMotor(2)">Motor 2</button>
+            <button onclick="vibrateMotor(3)">Motor 3</button>
+            <button onclick="vibrateMotor(3)">Motor 3</button>
+
+            <br><br>
+
+            <!-- stuur lengtes mee hoelang te trillen -->
+            <button onclick="vibrateMotor(1, 100)">Motor 1 - Kort</button>
+            <button onclick="vibrateMotor(1, 1000)">Motor 1 - Lang</button> 
+    </div>
+
+    <script>
+        const WLED_IP = 'http://4.3.2.1/';  //ensure WLED is connected to same network
+        const activeAudios = {};
+
+
+        //------------------------LEDs-----------------------------------
+
+        // Send commands to WLED via the backend (proxy)
+        function sendWLEDCommand(command, description) {
+            fetch('/api/wled', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ command, description })
+            }).catch(error => console.error('Error:', error));
+        }
+
+        function setLEDColor() {
+            const color = document.getElementById('ledColor').value;
+            const r = parseInt(color.slice(1, 3), 16);
+            const g = parseInt(color.slice(3, 5), 16);
+            const b = parseInt(color.slice(5, 7), 16);
+            sendWLEDCommand(`R=${r}&G=${g}&B=${b}`, 'Kleur gewijzigd');
+        }
+
+        function setLEDBrightness() {
+            const brightness = document.getElementById('brightness').value;
+            sendWLEDCommand(`A=${brightness}`, 'Helderheid gewijzigd');
+        }
+
+        function setLEDEffect(effectId) {
+            sendWLEDCommand(`FX=${effectId}`, `Effect ${effectId} ingesteld`);
+        }
+
+        // ======================= MUSIC =======================
+
+        let currentMusic = null;
+        let currentMusicButton = null;
+
+        const audioContext = new AudioContext();
+
+        const lowpass = audioContext.createBiquadFilter();
+        lowpass.type = "lowpass";
+        lowpass.frequency.value = 20000;
+
+        const highpass = audioContext.createBiquadFilter();
+        highpass.type = "highpass";
+        highpass.frequency.value = 20;
+
+        let source;
+        let playbackRate = 1.0;
+
+        let lowpassFreq = 20000;
+        let highpassFreq = 20;
+
+        
+
+        function playMusic(filePath, buttonElement = null) {
+
+            // Look up the dashboard button (if triggered by keypad button)
+            if (!buttonElement) {
+                buttonElement = document.querySelector(
+                    `[data-file="${filePath}"]`
+                );
+            }
+
+            // AudioContext activeren (vereist door sommige browsers)
+            if (audioContext.state === "suspended") {
+                audioContext.resume();
+            }
+
+            // If same button that was already playing is pressed -> stop it
+            if (currentMusic && currentMusic.src.includes(filePath)) {
+
+                currentMusic.pause();
+                currentMusic.currentTime = 0;
+
+                if (currentMusicButton) {
+                    currentMusicButton.classList.remove("active");
+                }
+
+                currentMusic = null;
+                currentMusicButton = null;
+
+                return;
+            }
+
+            // If other music was already playing -> stop it
+            if (currentMusic) {
+
+                currentMusic.pause();
+                currentMusic.currentTime = 0;
+
+                if (currentMusicButton) {
+                    currentMusicButton.classList.remove("active");
+                }
+            }
+
+            const audio = new Audio(filePath);
+            audio.loop = true;
+            audio.playbackRate = playbackRate;
+
+            // disconnect old source
+            if (source) {
+                source.disconnect();
+            }
+
+
+            // Reset audio settings voor nieuwe track
+            playbackRate = 1.0;
+            lowpassFreq = 20000;
+            highpassFreq = 20;
+
+            lowpass.frequency.value = lowpassFreq;
+            highpass.frequency.value = highpassFreq;
+
+            // Dashboard verversen
+            updateAudioDashboard();
+
+            // make new source
+            source = audioContext.createMediaElementSource(audio);
+
+            // Audio route:
+            // source -> highpass -> lowpass -> speakers
+            source.connect(highpass);
+            highpass.connect(lowpass);
+            lowpass.connect(audioContext.destination);
+
+            audio.play().catch(err => console.error(err));
+
+            currentMusic = audio;
+            currentMusicButton = buttonElement;
+
+            if (buttonElement) {
+                buttonElement.classList.add("active");
+            }
+
+            logAction("PLAY_MUSIC", {
+                soundFile: filePath
+            });
+        }
+
+        
+        //update de knopbewegingen in het dashboard
+        function updateAudioDashboard() {
+            document.getElementById("playbackValue").textContent =
+                playbackRate.toFixed(2);
+
+            document.getElementById("lowpassValue").textContent =
+                lowpassFreq;
+
+            document.getElementById("highpassValue").textContent =
+                highpassFreq;
+        }
+
+        // ======================= SOUND EFFECTS =======================
+
+        function playSfx(filePath) {
+
+            const audio = new Audio(filePath);
+
+            audio.play().catch(err => console.error(err));
+
+            logAction("PLAY_SOUND", {
+                soundFile: filePath
+            });
+        }
+
+        // ======================= KEY MAP =======================
+
+        // this maps the sounds to keys on the laptops keyboard. 
+        // The audio controller is then mapped to the laptop keyboard
+        
+
+        // music is mapped to the second row of keys
+        const musicKeyMap = {
+            'a': '/sounds/bg_jazz.mp3',
+            's': '/sounds/bg_classical.wav',
+            'd': '/sounds/bg_sitar.mp3',
+            'f': '/sounds/bg_mystery-bells.mp3',
+            'g': '/sounds/bg_happy-upbeat.mp3',
+            'h': '/sounds/bg_action.mp3'
+        };
+
+            //sound effects are mapped to the numpad numbers
+        const sfxKeyMap = {
+            '1': '/sounds/sfx_pling.wav',
+            '2': '/sounds/sfx_plop.mp3',      
+            '3': '/sounds/sfx_honk.wav',
+            '4': '/sounds/sfx_whoosh.mp3',
+            '5': '/sounds/sfx_spring.mp3',
+            '6': '/sounds/sfx_drum.wav'
+        };
+
+        // ======================= KEYBOARD =======================
+
+        //handles music or sound effects triggered by key presses, rather than mouse clicks
+
+
+
+        document.addEventListener('keydown', (event) => {
+
+            if (event.repeat) return;
+
+            const key = event.key.toLowerCase();
+
+            // ---------- Muziek ----------
+            if (musicKeyMap[key]) {
+                event.preventDefault();
+                playMusic(musicKeyMap[key]); //Provide the soundfile and the button on the dashboard
+                return;
+            }
+
+            // ---------- Sound effects ----------
+            if (sfxKeyMap[key]) {
+                event.preventDefault();
+                playSfx(sfxKeyMap[key]);
+                return;
+            }
+
+            // ---------- Effect sliders ----------
+            if (currentMusic) {
+
+                switch (event.key) {
+
+                    // Playback rate adjusted through arrows up and down
+                    case "ArrowUp":
+                        event.preventDefault();
+                        playbackRate = Math.min(2.0, playbackRate + 0.05);
+                        currentMusic.playbackRate = playbackRate;
+                        updateAudioDashboard();
+                        console.log("Playback:", playbackRate.toFixed(2));
+                        break;
+
+
+                    case "ArrowDown":
+                        event.preventDefault();
+                        playbackRate = Math.max(0.5, playbackRate - 0.05);
+                        currentMusic.playbackRate = playbackRate;
+                        updateAudioDashboard();
+                        console.log("Playback:", playbackRate.toFixed(2));
+                        break;
+
+                    // Low-pass filter adjusted through arrows <- ->
+                    case "ArrowLeft":
+                        event.preventDefault();
+                        lowpassFreq = Math.max(500, lowpassFreq - 500);
+                        lowpass.frequency.value = lowpassFreq;
+                        updateAudioDashboard();
+                        console.log("Low-pass:", lowpassFreq);
+                        break;
+
+                    case "ArrowRight":
+                        event.preventDefault();
+                        lowpassFreq = Math.min(20000, lowpassFreq + 500);
+                        lowpass.frequency.value = lowpassFreq;
+                        updateAudioDashboard();
+                        console.log("Low-pass:", lowpassFreq);
+                        break;
+
+                    // High-pass filter adjusted through Q and E keys
+                    case "q":
+                        event.preventDefault();
+                        highpassFreq = Math.min(5000, highpassFreq + 50);
+                        highpass.frequency.value = highpassFreq;
+                        updateAudioDashboard();
+                        console.log("High-pass:", highpassFreq);
+                        break;
+
+                    // High-pass omlaag
+                    case "e":
+                        event.preventDefault();
+                        highpassFreq = Math.max(20, highpassFreq - 50);
+                        highpass.frequency.value = highpassFreq;
+                        updateAudioDashboard();
+                        console.log("High-pass:", highpassFreq);
+                        break;
+                }
+            }
+
+        });
+        
+        //-------------------------------HAPTICS---------------------------
+
+        function vibrateMotor(motorId, duration = 300) {
+            fetch(`/api/motor/${motorId}/vibrate`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    duration: duration
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(`Motor ${motorId} geactiveerd`, data);
+            })
+            .catch(error => {
+                console.error(error);
+            });
+        }
+        
+        //----------------------------LOGGING---------------------------------
+
+       
+        function logAction(action, details = {}) {
+            fetch('/api/log', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ action, details })
+            }).catch(error => console.error('Error:', error));
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard - Welcome</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Wizard Dashboard</h1>
+        <p>Fill in a session ID and press the start button to go to the dashboard</p>
+        <form action="/start-session" method="POST">
+            <input 
+                type="text" 
+                name="sessionId" 
+                placeholder="Enter a session ID"
+                required
+            >
+
+            <button type="submit" class="start-button">
+                Start Session
+            </button>
+        </form>
+
+        <!--go to admin page-->
+        <div style="margin-top: 20px;">
+            <a href="/admin" style="color: #666; text-decoration: underline;">Admin Configuration</a>
+        </div>
+
+    </div>
+</body>
+</html>

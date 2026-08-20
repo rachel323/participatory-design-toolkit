@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sensory Dashboard - Logs</title>
+    <link rel="stylesheet" href="/styles.css">
+    <style>
+        .log-entry {
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin: 5px;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        .timestamp {
+            color: #666;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Logs voor deze Sessie</h1>
+        <div id="logs-container"></div>
+        <a href="/welkom.html" class="start-button">Terug naar Start</a>
+    </div>
+
+    <script>
+        // Haal logs op voor de huidige sessie
+        fetch('/api/logs')
+            .then(response => response.json())
+            .then(logs => {
+                const container = document.getElementById('logs-container');
+                logs.forEach(log => {
+                    const entry = document.createElement('div');
+                    entry.className = 'log-entry';
+                    entry.innerHTML = `
+                        <div class="timestamp">${log.timestamp}</div>
+                        <strong>${log.action}</strong>: ${JSON.stringify(log.details)}
+                    `;
+                    container.appendChild(entry);
+                });
+            })
+            .catch(error => console.error('Error:', error));
+    </script>
+</body>
+</html>

@@ -1,0 +1,70 @@
+/* Algemene stijlen */
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    background-color: #f5f5f5;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.section {
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    padding: 15px;
+    border-radius: 5px;
+    background-color: white;
+}
+
+/* Algemene stijl voor knoppen */
+button {
+    padding: 8px 12px;
+    margin: 5px;
+    cursor: pointer;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-family: Arial;
+    transition: background-color 0.3s; /* Soepele overgang */
+}
+
+/* Start/Stop knoppen */
+.start-button {
+    background-color: #5db067;
+    color: white;
+    display: block;
+    width: 200px;
+    margin: 20px auto;
+}
+
+.stop-button {
+    background-color: #f44336;
+    color: white;
+    float: right;
+}
+
+/* Active buttons (sound is playing) */
+button.active {
+    background-color: #8ec0ea; /* Blue */
+    color: white;
+    border-color: #8ec0ea;
+}
+
+/* Hover-effect for all buttons */
+button:hover {
+    background-color: #fede59;
+}
+
+/* Stijl voor de secties */
+.section {
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 5px;
+}
