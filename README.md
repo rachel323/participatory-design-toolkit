@@ -1,6 +1,6 @@
 # Prototyping Toolkit
 
-A multi-component toolkit for sensory dashboards, TouchDesigner visualizations, and Arduino/ESP interactions.
+A multi-component toolkit for the wizard control dashboard, TouchDesigner visualizations, and Arduino/ESP interactions.
 
 ## 📁 Structure
 - `sensory-dashboard/`: Node.js dashboard (VSCode project).
