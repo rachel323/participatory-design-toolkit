@@ -13,4 +13,5 @@ This project concerns the **participatory design toolkit** meant to support the 
 - `arduino/`: Arduino and ESP firmware.
 
 ## 🚀 Setup
-See [docs/installation.md](docs/installation.md) for detailed instructions.
+See [docs/installation.md](docs/installation.md) for detailed instructions on how to install and set everything up the first time.
+See [docs/quick-guide.md](docs/quick-guide.md) for an overview of how to set up and start a session, and for quick fixes if parts of the system don't work as expected.
