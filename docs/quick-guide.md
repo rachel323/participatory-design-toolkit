@@ -10,48 +10,73 @@ Before starting a test make sure
 - The haptic devices are fully charged
 - The iPad is fully charged or connected to a charger
 - The Bluetooth speaker is fully charged
+- The Laptop has HDMI and USB connections or adapters
 
 ---
 
 
 ## 🚀 **Set-up in Short**
-1. Power the laptop
-   - make sure it is connected to a charger
-3. Power the router
-   - Plug it in and press the on button
-5. WiFi available
-6. Laptop joins WiFi
-7. Start the dashboard
-   - in a terminal navigate to the dashboard in the GitHub folder
-   - npm start
-   - open a browser and go to localhost, you should see the welcome page
-   - start a session to get to the dashboard
-8. Turn on ESP devices
-9. ESPs join WiFi
-10. Dashboard shows connected
-11. Test vibrations
-12. Connect audio input device and speakers
-    - plug in the usb from the audio input device
-    - turn on the speaker and connect to the laptop over Bluetooth
-14. Test sound
-    - pressing a key on the audio input device should result in audio played on the speaker
-16. Connect projector
-    - use the HDMI cable
-18. Set display settings to Extend
-    - on Windows: Windows key + P
-    - on Mac: Command + F1
-20. Open TouchDesigner project
+1. **Power the laptop**
+   - Make sure the laptop is connected to a charger
+2. **Power the router**
+   - Plug the router in and press the on button
+   - After some startup time, the Wi-Fi should become available
+   - Check whether the laptop has connected to the Wi-Fi
+3. **Start the dashboard**
+   - Open a terminal in the cloned sensory-dashboard folder and send the following command
+     ```bash
+     node src\server.js
+     ```
+   - You should see a 'Backend is running on http://localhost:3000' reply
+   - Open a browser and navigate to the localhost by typing the URL in the search bar
+4. **Turn on ESP devices**
+   - Wait for the ESPs to join the Wi-Fi
+   - The dashboard should show a connection to the ESP's
+   - Check if the devices vibrate when you press a button
+5. **Connect audio input device and speakers**
+    - Plug in the audio input device to the laptop using USB
+    - Turn on the speaker and connect to the laptop over Bluetooth
+    - Check whether pressing a button on the audio input devices plays music over the speakers
+6. **Connect the projector**
+    - Use the HDMI cable to plug in the projector to the laptop
+    - Set the display settings to Extend on the laptop
+       -- on Windows: Windows key + P
+       -- on Mac: Command + F1
+7. **Open the TouchDesigner project**
     - open the TouchDesigner application; it should open the 'multitouch-visualisations' project automatically
-    - OR navigate to the GitHub folder and open from there
-22. Open iPad app
+    - if not, navigate to the 'touchdesigner' GitHub folder and open the 'multitouch-visualisations' file from there
+8. **Connect the iPad**
    - On the iPad, open the TC data app
-   - Check whether the iPad is connected to the router's WiFi
-24. Touch data received
-25. Projection works
+   - Check whether the iPad is connected to the router's Wi-Fi
 
 ---
 
+## 👷 **Personalization and Adaptation**
+
+### **🔉 Change Audio Files**
+1. Go to the Admin menu
+2. Press the Audio you want to replace
+3. Select a file on your laptop you want to replace it with
+4. Provide a new name for the audio file
+
+---
+
+### **👁️ Change Visualisation Parameters**
+1. Open the TouchDesigner project 
+
+---
+---
 ## 👷 **Quick fixes**
 
+### **🔉 Audio Input Not Working**
+
 ---
+### **👁️ Visuals Not Working**
+
+Does TouchDesigner not show any input? None of the things move? Then the connection between the iPad and TouchDesigner is broken.
+
+1. Check if the router is on
+2. Check the WiFi on the iPad;
+3. Check the WiFi on the laptop
+
 ---
