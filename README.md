@@ -10,6 +10,7 @@ This project concerns the **participatory design toolkit** meant to support the 
 - `sensory-dashboard/`: Node.js dashboard (VSCode project).
 - `touchdesigner/`: TouchDesigner project for iPad visualizations.
 - `arduino/`: Arduino and ESP firmware.
+- `docs/`: Documentation with Installation Manual and Quick Guide.
 
 ## 🚀 Setup
 See [docs/installation.md](docs/installation.md) for detailed instructions on how to install and set everything up the first time.
