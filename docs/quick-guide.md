@@ -40,8 +40,8 @@ Before starting a test make sure
 6. **Connect the projector**
     - Use the HDMI cable to plug in the projector to the laptop
     - Set the display settings to Extend on the laptop
-       -- on Windows: Windows key + P
-       -- on Mac: Command + F1
+       - on Windows: Windows key + P
+       - on Mac: Command + F1
 7. **Open the TouchDesigner project**
     - open the TouchDesigner application; it should open the 'multitouch-visualisations' project automatically
     - if not, navigate to the 'touchdesigner' GitHub folder and open the 'multitouch-visualisations' file from there
