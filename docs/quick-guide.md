@@ -76,7 +76,7 @@ Before starting a test make sure
 Does TouchDesigner not show any input? None of the things move? Then the connection between the iPad and TouchDesigner is broken.
 
 1. Check if the router is on
-2. Check the WiFi on the iPad;
-3. Check the WiFi on the laptop
+2. Check the Wi-Fi on the iPad;
+3. Check the Wi-Fi on the laptop
 
 ---
