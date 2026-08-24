@@ -10,10 +10,10 @@ Firstly, make sure you have the following programms installed on your laptop:
  |----------|--------|---------------|-------------|
  | **Git** | Latest | [https://git-scm.com/install/](https://git-scm.com/install/) | For installing and managing the project |
  | **VS Code** | Latest | [https://code.visualstudio.com/](https://code.visualstudio.com/) | For the dashboard project. |
- | **Node.js** | v18+ | [https://nodejs.org/](https://nodejs.org/) | Pick the  **LTS versie**. |
+ | **Node.js** | v18+ | [https://nodejs.org/](https://nodejs.org/) | Pick the latest  **LTS version**. |
  | **TouchDesigner** | 2023+ | [https://derivative.ca/](https://derivative.ca/) | **Account needed** (free trial available). |
  | **Arduino IDE** | 2.x | [https://www.arduino.cc/en/software](https://www.arduino.cc/en/software) | For the haptic feedback |
- | **WIN_TOOL (Mini Keyboard)** | - | [https://drive.google.com/file/d/1VTd7M0xR8LRjZ-CGcSx5y-NbOO4VAcL0/view?usp=sharing](https://drive.google.com/file/d/1VTd7M0xR8LRjZ-CGcSx5y-NbOO4VAcL0/view?usp=sharing) | Voor USB-minikeyboard mapping. |
+ | **WIN_TOOL (Mini Keyboard)** | - | [https://drive.google.com/file/d/1VTd7M0xR8LRjZ-CGcSx5y-NbOO4VAcL0/view?usp=sharing](https://drive.google.com/file/d/1VTd7M0xR8LRjZ-CGcSx5y-NbOO4VAcL0/view?usp=sharing) | For the audio input device mapping. |
 
 ---
 ---
@@ -22,7 +22,7 @@ Firstly, make sure you have the following programms installed on your laptop:
 
 ### **1️⃣ Install Software**
 1. **Install all necessary software** (See table above).
-2. If you don't have **a Touchdesigner account** yet, register to create one:
+2. If you don't have **a TouchDesigner account** yet, register to create one:
    - Go to [https://derivative.ca/user/register](https://derivative.ca/user/register).
    - Activate your account using the confirmation mail.
 
@@ -42,7 +42,7 @@ Firstly, make sure you have the following programms installed on your laptop:
    Open a terminal in the cloned map and type the following to open the files in the File Explorer
    ```bash
    explorer .  # Windows
-   # OF
+   # OR
    open .      # Mac
    ```
    - you should see a folder called participatory-design-toolkit with sub-folders 'arduino', 'docs', 'sensor-dashboard', 'touchdesigner', and more.
