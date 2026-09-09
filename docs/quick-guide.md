@@ -62,7 +62,14 @@ Before starting a test make sure
 ---
 
 ### **👁️ Change Visualisation Parameters**
-1. Open the TouchDesigner project 
+**TouchDesigner as a Tool**
+The visualizations are realized through the visual programming environment TouchDesigner. This program takes input from the iPad on different touchpoint and processes this data to create visuals with it. In order to personalize these parameters for your project, it is useful if you have some experience in TouchDesigner. Before changing parameters or processors in the TouchDesigner project, we therefore recommend to follow some basic tutorials to understand how the program works.
+
+**The Project File**
+The TouchDesigner project has been created as a timeline from left to right, where the first nodes handle the receiving of the iPad data, and moving to the right different operators handle the processing of this data. In order to clarify what is going on where, annotations that should give some explanation on what is happening have been added throughout this timeline. 
+
+---
+### **📳 Change Haptics Patterns**
 
 ---
 ---
