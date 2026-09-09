@@ -1,4 +1,5 @@
 // This is the server class that handles all the routes for the dashboard
+require('dotenv').config();
 
 const express = require('express');
 const session = require('express-session');
@@ -13,6 +14,7 @@ const soundRoutes = require('./routes/sound');
 const sessionRoutes = require('./routes/session');
 const logRoutes = require('./routes/log');
 const motorRoutes = require('./routes/motor');      //haptic
+const configRoutes = require('./routes/config').router;
 
 
 
@@ -49,6 +51,7 @@ app.use('/api/wled', wledRoutes);
 app.use('/api/sound', soundRoutes);
 app.use('/api/log', logRoutes);
 app.use('/api/motor', motorRoutes);         //haptic
+app.use('/api/config', configRoutes);
 
 // Session routes
 app.use('/', sessionRoutes);

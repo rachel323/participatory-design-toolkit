@@ -1,0 +1,194 @@
+[
+  {
+    "timestamp": "2026-09-09T08:11:57.768Z",
+    "sessionId": "1",
+    "action": "PLAY_MUSIC",
+    "details": {
+      "soundFile": "/sounds/bg_sitar.mp3"
+    }
+  },
+  {
+    "timestamp": "2026-09-09T08:12:04.507Z",
+    "sessionId": "1",
+    "action": "PLAY_MUSIC",
+    "details": {
+      "soundFile": "/sounds/bg_happy-upbeat.mp3"
+    }
+  },
+  {
+    "timestamp": "2026-09-09T08:12:06.186Z",
+    "sessionId": "1",
+    "action": "PLAY_MUSIC",
+    "details": {
+      "soundFile": "/sounds/bg_action.mp3"
+    }
+  },
+  {
+    "timestamp": "2026-09-09T08:12:16.528Z",
+    "sessionId": "1",
+    "action": "PLAY_MUSIC",
+    "details": {
+      "soundFile": "/sounds/bg_classical.wav"
+    }
+  },
+  {
+    "timestamp": "2026-09-09T08:12:27.028Z",
+    "sessionId": "1",
+    "action": "PLAY_SOUND",
+    "details": {
+      "soundFile": "/sounds/sfx_whoosh.mp3"
+    }
+  },
+  {
+    "timestamp": "2026-09-09T08:12:28.401Z",
+    "sessionId": "1",
+    "action": "PLAY_SOUND",
+    "details": {
+      "soundFile": "/sounds/sfx_spring.mp3"
+    }
+  },
+  {
+    "timestamp": "2026-09-09T08:12:30.020Z",
+    "sessionId": "1",
+    "action": "PLAY_SOUND",
+    "details": {
+      "soundFile": "/sounds/sfx_drum.wav"
+    }
+  },
+  {
+    "timestamp": "2026-09-09T08:12:31.775Z",
+    "sessionId": "1",
+    "action": "PLAY_SOUND",
+    "details": {
+      "soundFile": "/sounds/sfx_plop.mp3"
+    }
+  },
+  {
+    "timestamp": "2026-09-09T08:12:33.164Z",
+    "sessionId": "1",
+    "action": "PLAY_MUSIC",
+    "details": {
+      "soundFile": "/sounds/bg_mystery-bells.mp3"
+    }
+  },
+  {
+    "timestamp": "2026-09-09T08:12:35.098Z",
+    "sessionId": "1",
+    "action": "PLAY_SOUND",
+    "details": {
+      "soundFile": "/sounds/sfx_drum.wav"
+    }
+  },
+  {
+    "timestamp": "2026-09-09T08:12:36.673Z",
+    "sessionId": "1",
+    "action": "PLAY_SOUND",
+    "details": {
+      "soundFile": "/sounds/sfx_plop.mp3"
+    }
+  },
+  {
+    "timestamp": "2026-09-09T08:12:37.107Z",
+    "sessionId": "1",
+    "action": "PLAY_SOUND",
+    "details": {
+      "soundFile": "/sounds/sfx_plop.mp3"
+    }
+  },
+  {
+    "timestamp": "2026-09-09T08:12:37.512Z",
+    "sessionId": "1",
+    "action": "PLAY_SOUND",
+    "details": {
+      "soundFile": "/sounds/sfx_honk.wav"
+    }
+  },
+  {
+    "timestamp": "2026-09-09T08:12:38.044Z",
+    "sessionId": "1",
+    "action": "PLAY_SOUND",
+    "details": {
+      "soundFile": "/sounds/sfx_whoosh.mp3"
+    }
+  },
+  {
+    "timestamp": "2026-09-09T08:13:09.166Z",
+    "sessionId": "1",
+    "action": "PLAY_MUSIC",
+    "details": {
+      "soundFile": "/sounds/bg_jazz.mp3"
+    }
+  },
+  {
+    "timestamp": "2026-09-09T08:13:10.107Z",
+    "sessionId": "1",
+    "action": "PLAY_MUSIC",
+    "details": {
+      "soundFile": "/sounds/bg_sitar.mp3"
+    }
+  },
+  {
+    "timestamp": "2026-09-09T08:13:10.509Z",
+    "sessionId": "1",
+    "action": "PLAY_MUSIC",
+    "details": {
+      "soundFile": "/sounds/bg_classical.wav"
+    }
+  },
+  {
+    "timestamp": "2026-09-09T08:13:11.049Z",
+    "sessionId": "1",
+    "action": "PLAY_MUSIC",
+    "details": {
+      "soundFile": "/sounds/bg_mystery-bells.mp3"
+    }
+  },
+  {
+    "timestamp": "2026-09-09T08:58:17.458Z",
+    "sessionId": "0",
+    "action": "PLAY_MUSIC",
+    "details": {
+      "soundFile": "/sounds/bg_jazz.mp3"
+    }
+  },
+  {
+    "timestamp": "2026-09-09T08:58:54.971Z",
+    "sessionId": "0",
+    "action": "PLAY_MUSIC",
+    "details": {
+      "soundFile": "/sounds/bg_jazz.mp3"
+    }
+  },
+  {
+    "timestamp": "2026-09-09T09:00:04.521Z",
+    "sessionId": "0",
+    "action": "PLAY_MUSIC",
+    "details": {
+      "soundFile": "/sounds/bg_jazz.mp3"
+    }
+  },
+  {
+    "timestamp": "2026-09-09T09:00:24.229Z",
+    "sessionId": "0",
+    "action": "PLAY_MUSIC",
+    "details": {
+      "soundFile": "/sounds/bg_sitar.mp3"
+    }
+  },
+  {
+    "timestamp": "2026-09-09T09:00:25.497Z",
+    "sessionId": "0",
+    "action": "PLAY_MUSIC",
+    "details": {
+      "soundFile": "/sounds/bg_jazz.mp3"
+    }
+  },
+  {
+    "timestamp": "2026-09-09T09:00:41.387Z",
+    "sessionId": "0",
+    "action": "PLAY_MUSIC",
+    "details": {
+      "soundFile": "/sounds/bg_mystery-bells.mp3"
+    }
+  }
+]

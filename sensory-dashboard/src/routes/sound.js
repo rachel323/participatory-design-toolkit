@@ -57,28 +57,60 @@ router.post('/upload', upload.single('soundFile'), (req, res) => {
   });
 });
 
-// Endpoint om een geluid te vervangen
-router.post('/replace', upload.single('soundFile'), (req, res) => {
-  const { soundId } = req.body;
-  if (!soundId || !req.file) {
-    return res.status(400).json({ error: 'Ongeldige gegevens' });
+function validateReplaceRequest({ soundId, file, soundType }) {
+  if (!soundId || !String(soundId).trim()) {
+    return { ok: false, status: 400, error: 'Ongeldig geluids-ID' };
   }
 
-  // Check of het geluid bestaat in de lijst
-  const soundExists = [...existingSounds.music, ...existingSounds.sfx].some(s => s.id === soundId);
-  if (!soundExists) {
-    return res.status(400).json({ error: 'Ongeldig geluids-ID' });
+  if (!file) {
+    return { ok: false, status: 400, error: 'Geen bestand geüpload' };
+  }
+
+  if (!['music', 'sfx'].includes(soundType)) {
+    return { ok: false, status: 400, error: 'Ongeldig geluids-type' };
+  }
+
+  return { ok: true, soundType };
+}
+
+// Endpoint om een geluid te vervangen
+router.post('/replace', upload.single('soundFile'), (req, res) => {
+  const { soundId, soundType } = req.body;
+
+  const validation = validateReplaceRequest({
+    soundId,
+    file: req.file,
+    soundType
+  });
+
+  if (!validation.ok) {
+    return res.status(validation.status).json({ success: false, error: validation.error });
+  }
+
+  const cleanSoundId = String(soundId).trim();
+  const category = soundType === 'music' ? 'music' : 'sfx';
+  const existingLookup = [...existingSounds.music, ...existingSounds.sfx].some(item => item.id === cleanSoundId);
+
+  if (!existingLookup) {
+    existingSounds[category].push({ id: cleanSoundId, name: cleanSoundId });
   }
 
   // Verplaats het nieuwe bestand naar de sounds map met de bestaande naam
-  const newPath = path.join(soundsDir, soundId);
-  fs.renameSync(req.file.path, newPath);
+  const targetPath = path.join(soundsDir, cleanSoundId);
+
+  if (fs.existsSync(targetPath)) {
+    fs.unlinkSync(targetPath);
+  }
+
+  fs.renameSync(req.file.path, targetPath);
 
   res.json({
     success: true,
-    filePath: `/sounds/${soundId}`,
-    message: `Geluid ${soundId} vervangen door ${req.file.originalname}`
+    filePath: `/sounds/${cleanSoundId}`,
+    message: `Geluid ${cleanSoundId} vervangen door ${req.file.originalname}`
   });
 });
+
+router.validateReplaceRequest = validateReplaceRequest;
 
 module.exports = router;

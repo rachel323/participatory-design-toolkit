@@ -1,52 +1,74 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Admin - Geluiden Beheren</title>
+    <title>Admin - Manage Sounds</title>
     <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
     <div class="container">
-        <h1>Admin - Geluiden Beheren</h1>
+        <h1>Admin Page</h1>
 
-        <div class="section">
-            <h2>🔄 Geluid Vervangen</h2>
-            <form id="replaceSoundForm" enctype="multipart/form-data">
+        <form id="adminConfigForm" enctype="multipart/form-data">
+            <div class="section">
+                <h2>Dashboard Visibility</h2>
+                <fieldset>
+                    <legend>Visible dashboard sections</legend>
+                    <label>
+                        <input type="checkbox" id="showLedStrip" name="ledStrip" checked>
+                        LED Strip
+                    </label>
+                    <label>
+                        <input type="checkbox" id="showSound" name="sound" checked>
+                        Sound
+                    </label>
+                    <label>
+                        <input type="checkbox" id="showHaptics" name="haptics" checked>
+                        Haptics
+                    </label>
+                </fieldset>
+            </div>
+
+            <div class="section">
+                <h2>Replace Sound</h2>
                 <label for="soundType">Type:</label>
                 <select id="soundType" name="soundType" required>
-                    <option value="music">Muziek</option>
+                    <option value="music">Music</option>
                     <option value="sfx">Sound Effects</option>
                 </select>
 
-                <label for="soundId">Kies geluid om te vervangen:</label>
-                <select id="soundId" name="soundId" required>
+                <label for="soundId">Choose a sound to replace:</label>
+                <select id="soundId" name="soundId">
                     <!-- Opties worden dynamisch geladen -->
                 </select>
 
                 <br><br>
+
+                <label for="customSoundId">Or provide a new sound ID:</label>
+                <input type="text" id="customSoundId" name="customSoundId" placeholder="e.g., bg_new_sound.wav">
+
+                <br><br>
                 
-                <label for="soundFile">Nieuw geluidsbestand:</label>
-                <input type="file" id="soundFile" name="soundFile" accept="audio/*" required>
+                <label for="soundFile">New sound file:</label>
+                <input type="file" id="soundFile" name="soundFile" accept="audio/*">
                 
                 <br><br>
+            </div>
 
-                <label for="adminPassword">Admin Wachtwoord:</label>
-                <input type="password" id="adminPassword" name="adminPassword" required>   
-
-                <button type="submit">Vervang Geluid</button>
-            </form>
-            <div id="status"></div>
-        </div>
-
-        <div class="section">
-            <h2>🔙 Terug naar Dashboard</h2>
-            <a href="/">
-                <button type="button">Terug naar Welkomspagina</button>
-            </a>
-        </div>
+            <div class="section">
+                <label for="configPassword">Admin Password:</label>
+                <input type="password" id="configPassword" name="adminPassword" required>
+                <br><br>
+                <button type="submit">Save</button>
+                <div id="configStatus"></div>
+                <div id="status"></div>
+                <a href="/">
+                    <button type="button">Back to welcome Page</button>
+                </a>
+            </div>
+        </form>
     </div>
 
     <script>
-        // Load the list with current sounds
         async function loadSoundList() {
             try {
                 const response = await fetch('/api/sound/list');
@@ -65,7 +87,6 @@
             }
         }
 
-        // Make the dropdown with the sounds
         function updateSoundDropdown(sounds, type) {
             const soundIdSelect = document.getElementById('soundId');
             soundIdSelect.innerHTML = '';
@@ -80,43 +101,87 @@
             });
         }
 
-        // Toon statusberichten
         function showStatus(message, type) {
             const statusDiv = document.getElementById('status');
             statusDiv.textContent = message;
             statusDiv.className = type;
         }
 
-        //handle the substituion of a sound
-        document.getElementById('replaceSoundForm').addEventListener('submit', async (e) => {
-        e.preventDefault();
-
-        // Maak een FormData-object aan
-        const formData = new FormData(e.target);
-
-        // Voeg handmatig het geselecteerde soundId toe (omdat het niet in het formulier staat als input)
-        const soundId = document.getElementById('soundId').value;
-        formData.append('soundId', soundId);
-
-        try {
-            const response = await fetch('/api/sound/replace', {
-            method: 'POST',
-            body: formData,
-            });
-
-            const result = await response.json();
-            if (result.success) {
-            showStatus(`✅ Geluid vervangen: ${result.message}`, 'success');
-            } else {
-            showStatus('❌ Fout: ' + (result.error || 'Onbekend'), 'error');
-            }
-        } catch (error) {
-            showStatus('❌ Upload mislukt: ' + error.message, 'error');
+        function showConfigStatus(message, type) {
+            const configStatusDiv = document.getElementById('configStatus');
+            configStatusDiv.textContent = message;
+            configStatusDiv.className = type;
         }
+
+        async function loadDashboardConfig() {
+            try {
+                const response = await fetch('/api/config', {
+                    headers: { 'Accept': 'application/json' }
+                });
+
+                if (!response.ok) {
+                    throw new Error('Config endpoint returned ' + response.status);
+                }
+
+                const contentType = response.headers.get('content-type') || '';
+                if (!contentType.includes('application/json')) {
+                    throw new Error('Config endpoint returned HTML instead of JSON');
+                }
+
+                const config = await response.json();
+                const sections = config.sections || {};
+
+                document.getElementById('showSound').checked = sections.sound !== false;
+                document.getElementById('showLedStrip').checked = sections.ledStrip !== false;
+                document.getElementById('showHaptics').checked = sections.haptics !== false;
+            } catch (error) {
+                showConfigStatus('Kon dashboard-config niet laden: ' + error.message, 'error');
+            }
+        }
+
+        document.getElementById('adminConfigForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const formData = new FormData(e.target);
+            const selectedSoundId = document.getElementById('soundId').value;
+            const customSoundId = document.getElementById('customSoundId').value.trim();
+            const soundType = document.getElementById('soundType').value;
+
+            formData.set('soundType', soundType);
+            formData.set('soundId', customSoundId || selectedSoundId);
+            formData.set('sound', document.getElementById('showSound').checked ? 'on' : 'off');
+            formData.set('ledStrip', document.getElementById('showLedStrip').checked ? 'on' : 'off');
+            formData.set('haptics', document.getElementById('showHaptics').checked ? 'on' : 'off');
+
+            try {
+                const response = await fetch('/api/config/save', {
+                    method: 'POST',
+                    body: formData,
+                });
+
+                const contentType = response.headers.get('content-type') || '';
+                if (!contentType.includes('application/json')) {
+                    throw new Error('API endpoint returned HTML instead of JSON');
+                }
+
+                const result = await response.json();
+                if (result.success) {
+                    showConfigStatus('✅ Dashboard configuratie en geluid opgeslagen.', 'success');
+                    if (result.soundId) {
+                        showStatus(`✅ Geluid opgeslagen als ${result.soundId}`, 'success');
+                    }
+                } else {
+                    showConfigStatus('❌ Fout: ' + (result.error || 'Onbekend'), 'error');
+                }
+            } catch (error) {
+                showConfigStatus('❌ Opslaan mislukt: ' + error.message, 'error');
+            }
         });
 
-        // Laad geluiden bij het laden van de pagina
-        document.addEventListener('DOMContentLoaded', loadSoundList);
+        document.addEventListener('DOMContentLoaded', () => {
+            loadSoundList();
+            loadDashboardConfig();
+        });
     </script>
 </body>
 </html>

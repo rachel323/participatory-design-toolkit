@@ -10,84 +10,108 @@
         <button type="submit" class="stop-button">Stop Sessie</button>
     </form>
 
-    <!-- WLED Controls -->
-    <div class="section">
-        <h2>LED Strip</h2>
-        <button onclick="sendWLEDCommand('on', 'LED AAN')">On</button>
-        <button onclick="sendWLEDCommand('off', 'LED UIT')">Off</button>
-        <input type="color" id="ledColor" value="#ff0000">
-        <button onclick="setLEDColor()">Set colour</button>
-        <input type="range" id="brightness" min="0" max="255" value="128">
-        <button onclick="setLEDBrightness()">Brightness</button>
+    <div id="dashboardSections">
+        <!-- WLED Controls -->
+        <div class="section" id="ledStripSection">
+            <h2>LED Strip</h2>
+            <button onclick="sendWLEDCommand('on', 'LED AAN')">On</button>
+            <button onclick="sendWLEDCommand('off', 'LED UIT')">Off</button>
+            <input type="color" id="ledColor" value="#ff0000">
+            <button onclick="setLEDColor()">Set colour</button>
+            <input type="range" id="brightness" min="0" max="255" value="128">
+            <button onclick="setLEDBrightness()">Brightness</button>
 
-        <div class="subsection">
-            <h3>Effects</h3>
-            <!--There are more effects via: https://kno.wled.ge/interfaces/json-api/ 
-            to add more effects find which number it is from their effects list and add the setLEDEffect-->
-            <button onclick="setLEDEffect(0)">Solid</button>
-            <button onclick="setLEDEffect(2)">Breathe</button>
-            <button onclick="setLEDEffect(3)">Wipe</button>
-            <button onclick="setLEDEffect(20)">Sparkle</button>
-            <button onclick="setLEDEffect(25)">Strobe</button>
-            <button onclick="setLEDEffect(74)">Colortwinkle</button>
-            <button onclick="setLEDEffect(9)">Rainbow</button>
-        </div>
-    </div>
-
-    <!-- Sound Controls -->
-    <div class="section">
-        <h2>Sound</h2>
-        <!-- make sure the correct soundfiles are in the 'sounds' folder in the project 
-         also check this at the KEYMAP section below for sounds triggered by keys-->
-        <div class="subsection">
-            <h3>Music</h3>
-            <button data-file="/sounds/bg_jazz.mp3" onclick="playMusic('/sounds/bg_jazz.mp3', this)">Jazz</button>
-            <button data-file="/sounds/bg_classical.wav" onclick="playMusic('/sounds/bg_classical.wav', this)">Impressionistic</button>
-            <button data-file="/sounds/bg_sitar.mp3" onclick="playMusic('/sounds/bg_sitar.mp3', this)">Sitar</button>
-            <button data-file="/sounds/bg_mystery-bells.mp3" onclick="playMusic('/sounds/bg_mystery-bells.mp3', this)">Mystery</button>
-            <button data-file="/sounds/bg_happy-upbeat.mp3" onclick="playMusic('/sounds/bg_happy-upbeat.mp3', this)">Happy</button>
-            <button data-file="/sounds/bg_action.mp3" onclick="playMusic('/sounds/bg_action.mp3', this)">Action</button>
+            <div class="subsection">
+                <h3>Effects</h3>
+                <!--There are more effects via: https://kno.wled.ge/interfaces/json-api/ 
+                to add more effects find which number it is from their effects list and add the setLEDEffect-->
+                <button onclick="setLEDEffect(0)">Solid</button>
+                <button onclick="setLEDEffect(2)">Breathe</button>
+                <button onclick="setLEDEffect(3)">Wipe</button>
+                <button onclick="setLEDEffect(20)">Sparkle</button>
+                <button onclick="setLEDEffect(25)">Strobe</button>
+                <button onclick="setLEDEffect(74)">Colortwinkle</button>
+                <button onclick="setLEDEffect(9)">Rainbow</button>
+            </div>
         </div>
 
-        <div class="subsection">
-            <h3>Music adjustments</h3>
-            <p>Playback Rate: <span id="playbackValue">1.00</span>
-            &emsp; Low-pass: <span id="lowpassValue">20000</span> Hz
-            &emsp; High-pass: <span id="highpassValue">20</span> Hz</p>
+        <!-- Sound Controls -->
+        <div class="section" id="soundSection">
+            <h2>Sound</h2>
+            <!-- make sure the correct soundfiles are in the 'sounds' folder in the project 
+            also check this at the KEYMAP section below for sounds triggered by keys-->
+            <div class="subsection">
+                <h3>Music</h3>
+                <button data-file="/sounds/bg_jazz.mp3" onclick="playMusic('/sounds/bg_jazz.mp3', this)">Jazz</button>
+                <button data-file="/sounds/bg_classical.wav" onclick="playMusic('/sounds/bg_classical.wav', this)">Impressionistic</button>
+                <button data-file="/sounds/bg_sitar.mp3" onclick="playMusic('/sounds/bg_sitar.mp3', this)">Sitar</button>
+                <button data-file="/sounds/bg_mystery-bells.mp3" onclick="playMusic('/sounds/bg_mystery-bells.mp3', this)">Mystery</button>
+                <button data-file="/sounds/bg_happy-upbeat.mp3" onclick="playMusic('/sounds/bg_happy-upbeat.mp3', this)">Happy</button>
+                <button data-file="/sounds/bg_action.mp3" onclick="playMusic('/sounds/bg_action.mp3', this)">Action</button>
+            </div>
+
+            <div class="subsection">
+                <h3>Music adjustments</h3>
+                <p>Playback Rate: <span id="playbackValue">1.00</span>
+                &emsp; Low-pass: <span id="lowpassValue">20000</span> Hz
+                &emsp; High-pass: <span id="highpassValue">20</span> Hz</p>
+            </div>
+
+            <div class="subsection">
+                <h3>Sound effects</h3>
+                <button onclick="playSfx('/sounds/sfx_pling.wav', this)">Pling</button>
+                <button onclick="playSfx('/sounds/sfx_plop.mp3', this)">Plop</button>
+                <button onclick="playSfx('/sounds/sfx_honk.wav', this)">Honk</button>
+                <button onclick="playSfx('/sounds/sfx_whoosh.mp3', this)">Whoosh</button>
+                <button onclick="playSfx('/sounds/sfx_spring.mp3', this)">Spring</button>
+                <button onclick="playSfx('/sounds/sfx_drum.wav', this)">Drum</button>
+            </div>
         </div>
 
-        <div class="subsection">
-            <h3>Sound effects</h3>
-            <button onclick="playSfx('/sounds/sfx_pling.wav', this)">Pling</button>
-            <button onclick="playSfx('/sounds/sfx_plop.mp3', this)">Plop</button>
-            <button onclick="playSfx('/sounds/sfx_honk.wav', this)">Honk</button>
-            <button onclick="playSfx('/sounds/sfx_whoosh.mp3', this)">Whoosh</button>
-            <button onclick="playSfx('/sounds/sfx_spring.mp3', this)">Spring</button>
-            <button onclick="playSfx('/sounds/sfx_drum.wav', this)">Drum</button>
+        <!-- Haptics Controls -->
+        <div class="section" id="hapticsSection">
+                <h2>Haptics</h2>
+
+                <button onclick="vibrateMotor(1)">Motor 1</button>
+                <button onclick="vibrateMotor(2)">Motor 2</button>
+                <button onclick="vibrateMotor(3)">Motor 3</button>
+                <button onclick="vibrateMotor(3)">Motor 3</button>
+
+                <br><br>
+
+                <!-- stuur lengtes mee hoelang te trillen -->
+                <button onclick="vibrateMotor(1, 100)">Motor 1 - Kort</button>
+                <button onclick="vibrateMotor(1, 1000)">Motor 1 - Lang</button> 
         </div>
-
-        
-    </div>
-
-    <!-- Haptics Controls -->
-    <div class="section">
-            <h2>Haptics</h2>
-
-            <button onclick="vibrateMotor(1)">Motor 1</button>
-            <button onclick="vibrateMotor(2)">Motor 2</button>
-            <button onclick="vibrateMotor(3)">Motor 3</button>
-            <button onclick="vibrateMotor(3)">Motor 3</button>
-
-            <br><br>
-
-            <!-- stuur lengtes mee hoelang te trillen -->
-            <button onclick="vibrateMotor(1, 100)">Motor 1 - Kort</button>
-            <button onclick="vibrateMotor(1, 1000)">Motor 1 - Lang</button> 
     </div>
 
     <script>
         const WLED_IP = 'http://4.3.2.1/';  //ensure WLED is connected to same network
         const activeAudios = {};
+
+        async function loadDashboardConfig() {
+            try {
+                const response = await fetch('/api/config');
+                const config = await response.json();
+                const sections = config.sections || {};
+
+                if (!sections.sound) {
+                    document.getElementById('soundSection').style.display = 'none';
+                }
+
+                if (!sections.ledStrip) {
+                    document.getElementById('ledStripSection').style.display = 'none';
+                }
+
+                if (!sections.haptics) {
+                    document.getElementById('hapticsSection').style.display = 'none';
+                }
+            } catch (error) {
+                console.warn('Could not load dashboard config:', error);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', loadDashboardConfig);
 
 
         //------------------------LEDs-----------------------------------
