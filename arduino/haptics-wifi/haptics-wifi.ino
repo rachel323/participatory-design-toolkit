@@ -1,18 +1,23 @@
-#include <ESP8266WiFi.h>
-#include <ESP8266WebServer.h>
+#include <WiFi.h>
+#include <WebServer.h>
 
+// make sure the USB CDC on boot is enabled
+// install esp32 board for the c3 dev module
+
+//use wifi from router
 const char* ssid = "hetInternet_2G";
 const char* password = "CaptainMorgan27";
 
-ESP8266WebServer server(80);
+WebServer server(80);
 
-#define motorPin 14
+#define motorPin 4
 
 void vibrate() {
   Serial.println("Vibrate!");
 
   digitalWrite(motorPin, HIGH);
   Serial.println("HIGH");
+
   delay(1000);
 
   digitalWrite(motorPin, LOW);
@@ -22,22 +27,28 @@ void vibrate() {
 }
 
 void setup() {
+  Serial.begin(115200);
+
   pinMode(motorPin, OUTPUT);
   digitalWrite(motorPin, LOW);
 
-  Serial.begin(115200);
-
   WiFi.begin(ssid, password);
+
+  Serial.print("Verbinden met WiFi");
 
   while (WiFi.status() != WL_CONNECTED) {
     delay(500);
+    Serial.print(".");
   }
 
-  Serial.println(WiFi.localIP()); //print localIP om in dashboard aan te roepen
+  Serial.println();
+  Serial.print("Verbonden! IP-adres: ");
+  Serial.println(WiFi.localIP());
 
   server.on("/vibrate", vibrate);
 
   server.begin();
+  Serial.println("Webserver gestart");
 }
 
 void loop() {

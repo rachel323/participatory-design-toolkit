@@ -5,7 +5,7 @@ router.post("/:id/vibrate", async (req, res) => {
 
     //check the IP addresses from the ESP's on the WiFi
     const motors = {
-        1: "192.168.1.155",
+        1: "192.168.1.66", //de blauwe
         2: "192.168.1.102",
         3: "192.168.1.103"
     };
