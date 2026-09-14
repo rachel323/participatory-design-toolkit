@@ -87,3 +87,11 @@ Does TouchDesigner not show any input? None of the things move? Then the connect
 3. Check the Wi-Fi on the laptop
 
 ---
+### **👁️ Haptics Not Working**
+1. Check if the router is on
+2. Check whether the laptop is connected to the WiFI
+3. In the browser, go to http://[IP-address-ESP]/vibrate. If the ESP is connected the browser should return OK.
+
+1. Connect the ESP to the laptop using a USB- USB-C cable with data. You can use the cable from the audio input device. A light should turn on on the ESP in different colors.
+2. Open the arduino haptics file in Arduino IDE program.
+3. Upload the program to the arduino again. check in the serial monitor whether the IP address is the same as in the motor.js file from the dashboard (file in VSC).
