@@ -4,9 +4,9 @@
 // make sure the USB CDC on boot is enabled
 // install esp32 board for the c3 dev module
 
-//use wifi from router
-const char* ssid = "hetInternet_2G";
-const char* password = "CaptainMorgan27";
+//use the same wifi the laptop will be using
+const char* ssid = "Hotspot12";
+const char* password = "Co-Intend2026";
 
 WebServer server(80);
 
