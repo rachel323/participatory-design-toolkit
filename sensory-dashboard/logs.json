@@ -1279,5 +1279,141 @@
     "details": {
       "soundFile": "/sounds/bg_mystery-bells.mp3"
     }
+  },
+  {
+    "timestamp": "2026-09-14T08:34:14.206Z",
+    "sessionId": "1",
+    "action": "PLAY_MUSIC",
+    "details": {
+      "soundFile": "/sounds/bg_jazz.mp3"
+    }
+  },
+  {
+    "timestamp": "2026-09-14T08:34:17.562Z",
+    "sessionId": "1",
+    "action": "PLAY_SOUND",
+    "details": {
+      "soundFile": "/sounds/sfx_plop.mp3"
+    }
+  },
+  {
+    "timestamp": "2026-09-14T08:34:18.078Z",
+    "sessionId": "1",
+    "action": "PLAY_SOUND",
+    "details": {
+      "soundFile": "/sounds/sfx_honk.wav"
+    }
+  },
+  {
+    "timestamp": "2026-09-14T08:34:18.605Z",
+    "sessionId": "1",
+    "action": "PLAY_SOUND",
+    "details": {
+      "soundFile": "/sounds/sfx_whoosh.mp3"
+    }
+  },
+  {
+    "timestamp": "2026-09-14T08:34:19.910Z",
+    "sessionId": "1",
+    "action": "PLAY_SOUND",
+    "details": {
+      "soundFile": "/sounds/sfx_spring.mp3"
+    }
+  },
+  {
+    "timestamp": "2026-09-14T08:34:46.806Z",
+    "sessionId": "1",
+    "action": "PLAY_MUSIC",
+    "details": {
+      "soundFile": "/sounds/bg_jazz.mp3"
+    }
+  },
+  {
+    "timestamp": "2026-09-14T08:34:48.006Z",
+    "sessionId": "1",
+    "action": "PLAY_MUSIC",
+    "details": {
+      "soundFile": "/sounds/bg_classical.wav"
+    }
+  },
+  {
+    "timestamp": "2026-09-14T08:34:49.883Z",
+    "sessionId": "1",
+    "action": "PLAY_MUSIC",
+    "details": {
+      "soundFile": "/sounds/bg_sitar.mp3"
+    }
+  },
+  {
+    "timestamp": "2026-09-14T08:34:51.773Z",
+    "sessionId": "1",
+    "action": "PLAY_MUSIC",
+    "details": {
+      "soundFile": "/sounds/bg_mystery-bells.mp3"
+    }
+  },
+  {
+    "timestamp": "2026-09-14T08:34:54.689Z",
+    "sessionId": "1",
+    "action": "PLAY_MUSIC",
+    "details": {
+      "soundFile": "/sounds/bg_happy-upbeat.mp3"
+    }
+  },
+  {
+    "timestamp": "2026-09-14T08:34:55.868Z",
+    "sessionId": "1",
+    "action": "PLAY_MUSIC",
+    "details": {
+      "soundFile": "/sounds/bg_action.mp3"
+    }
+  },
+  {
+    "timestamp": "2026-09-14T08:35:00.747Z",
+    "sessionId": "1",
+    "action": "PLAY_SOUND",
+    "details": {
+      "soundFile": "/sounds/sfx_pling.wav"
+    }
+  },
+  {
+    "timestamp": "2026-09-14T08:35:01.543Z",
+    "sessionId": "1",
+    "action": "PLAY_SOUND",
+    "details": {
+      "soundFile": "/sounds/sfx_plop.mp3"
+    }
+  },
+  {
+    "timestamp": "2026-09-14T08:35:02.068Z",
+    "sessionId": "1",
+    "action": "PLAY_SOUND",
+    "details": {
+      "soundFile": "/sounds/sfx_honk.wav"
+    }
+  },
+  {
+    "timestamp": "2026-09-14T08:35:02.540Z",
+    "sessionId": "1",
+    "action": "PLAY_SOUND",
+    "details": {
+      "soundFile": "/sounds/sfx_whoosh.mp3"
+    }
+  },
+  {
+    "timestamp": "2026-09-14T08:35:03.192Z",
+    "sessionId": "1",
+    "action": "PLAY_SOUND",
+    "details": {
+      "soundFile": "/sounds/sfx_spring.mp3"
+    }
+  },
+  {
+    "timestamp": "2026-09-14T08:35:03.778Z",
+    "sessionId": "1",
+    "action": "PLAY_SOUND",
+    "details": {
+      "soundFile": "/sounds/sfx_drum.wav"
+    }
   }
 ]
