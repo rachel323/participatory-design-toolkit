@@ -86,5 +86,31 @@ Now we will be connection the haptics and visual components. These require WiFi 
 5. **Connect the iPad to the router's WiFi**
 
 ### **6️⃣ Set up the Haptic Devices**
+In order for the haptic devices to work, the Arduino haptics-wifi.ino script should be uploaded to every ESP and the accus should be charged.
+
+**Uploading the script**
+1. **Open the haptics-wifi file**
+   - Navigate to the the participatory-desing-toolkit/arduino folder
+   - Double-click to open or right click 'open with'> Arduino IDE
+2. **Install the ESP32 board**
+   - In the left tool bar, press the second icon from the top to go to the boards manager
+   - Search for esp32 using the search bar
+   - Install the esp32 package by Espressif Systems
+4. **Plug in the ESP**
+   - Connect the ESP to the laptop using a USB to USB-C cable with data properties
+   - The Arduino IDE should find the board and show in the bottom right that it is connected to a COM
+      - If not, go to the Tools in the top bar, under Board look for the ESP32C3 Dev module and look for the Port you plugged it in
+      - Try another cable or USB port on your laptop if the ESP is still not found on a COM
+   - Under Tools, make sure USB CDC on Boot is enabled
+   - If the ESP is connected correctly pressing the Upload arrow in the top left of the screen should confirm the upload of the sketch.
+5. **Check the IP addresses and the WiFi**
+   - Once uploaded, go to the serial monitor (find the icon on the top right) and check the IP of the ESP on the WiFI
+   - Make sure this IP is the same as the IP address given in the src/routes/motor.js file in the dashboard
+   - Also check the ssid and password defined in the arduino IDE sketch you just uploaded. This should match the WiFi network the laptop will be connected to during testing.
+  
+**Charging the batteries**
+1. Make sure the switch is turned off. Only turn the switch on when you start testing with them.
+2. Plug an USB-C cable into the blue charging device. A red light will show if charging has started.
+3. When a blue light turns on, the battery is fully charged and the device can be plugged out and used for testing.
 
 ### **7️⃣ Set up the Visual **
