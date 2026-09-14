@@ -16,6 +16,8 @@ void vibrate() {
   Serial.println("Vibrate!");
 
   digitalWrite(motorPin, HIGH);
+  digitalWrite(3, HIGH);
+  digitalWrite(6, HIGH);
   Serial.println("HIGH");
 
   delay(1000);
