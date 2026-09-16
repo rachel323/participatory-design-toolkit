@@ -114,3 +114,19 @@ In order for the haptic devices to work, the Arduino haptics-wifi.ino script sho
 3. When a blue light turns on, the battery is fully charged and the device can be plugged out and used for testing.
 
 ### **7️⃣ Set up the Visual **
+1. **Make sure the Laptop and iPad are on the same WiFi**
+2. **Check the IP address of the laptop on the WiFi**
+  - In the laptop's setting search for WiFi
+  - Select the WiFi connection to see its properties
+  - Scroll down until you see the IPv4 address
+  - (If you can't find it, you can go to https://www.whatismyip.com/ and find the number there)
+4. **Open the OSC controller app on the iPad**
+5. **Go to settings and check the port and IP address**
+  - Port should match the number at Network Port from the oscin1 operator in TouchDesigner (usually 7000)
+  - IP address should match the IP address of the laptop
+  - Start the connection and close the settings
+6. **Open TouchDesigner on the laptop and check for signal**
+  - Press the 'Play' button in the bottom bar in TouchDesigner
+  - The OSC controller app, start sending signals by moving your fingers across the screen
+  - You should see the data of the movements in the TouchDesigner operators and view output
+
