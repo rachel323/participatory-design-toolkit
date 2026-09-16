@@ -58,6 +58,12 @@ Before starting a test make sure
 2. Press the Audio you want to replace
 3. Select a file on your laptop you want to replace it with
 4. Provide a new name for the audio file
+5. Fill in the admin password and press 'Save'.
+
+### **🔉 Change Dashboard Configuration**
+The admin page also allows the (un)checking of different parts of the toolbox to be shown on the dashboard. 
+This way you can hide parts you don't want to use in your test or hide elements that are controlled via a seperate controller.
+Don't forget to fill in the admin password and press 'Save' once you have (un)checked the appropriate boxes.
 
 ---
 
