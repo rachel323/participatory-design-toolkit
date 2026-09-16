@@ -116,7 +116,7 @@ In order for the haptic devices to work, the Arduino haptics-wifi.ino script sho
 
 Once you uploaded the script and charged the batteries the devices should automatically connect to the dashboard once turned on. 
 
-### **7️⃣ Set up the Visual **
+### **7️⃣ Set up the Visual**
 1. **Make sure the Laptop and iPad are on the same WiFi**
 2. **Check the IP address of the laptop on the WiFi**
   - In the laptop's setting search for WiFi
