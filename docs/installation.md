@@ -4,7 +4,7 @@ This manual details the step by step instruction to install and configure all th
 ---
 ---
 
-## 🛠 **Requirements: The Necessary Software**
+## 🛠 **Requirements: The necessary software**
 Firstly, make sure you have the following programms installed on your laptop:
    Software | Version | Download Link | Notes |
  |----------|--------|---------------|-------------|
@@ -65,7 +65,8 @@ Firstly, make sure you have the following programms installed on your laptop:
   
 ### **4️⃣ Set up the Audio Input Device**
 1. **Plug the device into the laptop using the USB-cable**
-2. **Open the MINI-KEYBOARD.exe from the WIN TOOL EN folder** (See table on top of page for the folder download link)
+2. **Open the MINI-KEYBOARD.exe from the WIN TOOL EN folder**
+   - See table on top of page for the folder download link
 3. **Check whether the correct keys are mapped on the keypad**
    - The correct keys should be mapped on the visual keypad, make sure you to check this with the image of the correct mapping below.
    - For the first time, you should probably map the correct keys to the corresponding keypad buttons. Click on a button from the keypad in the program (top part of the screen) and then click the correct key on the keyboard on the lower half of the screen. Once done for all keys and knobs, press download.
@@ -81,10 +82,54 @@ Now we will be connection the haptics and visual components. These require WiFi 
 1. **Turn on the Router**
    - Plug the router in a power socket and press the on button
    - Wait a couple of seconds for the router to start up
-3. **Connect the laptop to the router's WiFi**
+2. **Connect the laptop to the router's WiFi**
   - Check the IP address of the laptop on the WiFi, this should be...
-5. **Connect the iPad to the router's WiFi**
+3. **Connect the iPad to the router's WiFi**
 
 ### **6️⃣ Set up the Haptic Devices**
+In order for the haptic devices to work, the Arduino haptics-wifi.ino script should be uploaded to every ESP and the accus should be charged.
 
-### **7️⃣ Set up the Visual **
+**Uploading the script**
+1. **Open the haptics-wifi file**
+   - Navigate to the the participatory-desing-toolkit/arduino folder
+   - Double-click to open or right click 'open with'> Arduino IDE
+2. **Install the ESP32 board**
+   - In the left tool bar, press the second icon from the top to go to the boards manager
+   - Search for esp32 using the search bar
+   - Install the esp32 package by Espressif Systems
+3. **Plug in the ESP**
+   - Connect the ESP to the laptop using a USB to USB-C cable with data properties
+   - The Arduino IDE should find the board and show in the bottom right that it is connected to a COM
+      - If not, go to the Tools in the top bar, under Board look for the ESP32C3 Dev module and look for the Port you plugged it in
+      - Try another cable or USB port on your laptop if the ESP is still not found on a COM
+   - Under Tools, make sure USB CDC on Boot is enabled
+   - If the ESP is connected correctly pressing the Upload arrow in the top left of the screen should confirm the upload of the sketch.
+4. **Check the IP addresses and the WiFi**
+   - Once uploaded, go to the serial monitor (find the icon on the top right) and check the IP of the ESP on the WiFI
+   - Make sure this IP is the same as the IP address given in the src/routes/motor.js file in the dashboard
+   - Also check the ssid and password defined in the arduino IDE sketch you just uploaded. This should match the WiFi network the laptop will be connected to during testing.
+  
+**Charging the batteries**
+1. Make sure the switch is turned off. Only turn the switch on when you start testing with them.
+2. Plug an USB-C cable into the blue charging device. A red light will show if charging has started.
+3. When a blue light turns on, the battery is fully charged and the device can be plugged out and used for testing.
+
+Once you uploaded the script and charged the batteries the devices should automatically connect to the dashboard once turned on. 
+
+### **7️⃣ Set up the Visual**
+1. **Make sure the Laptop and iPad are on the same WiFi**
+2. **Check the IP address of the laptop on the WiFi**
+  - In the laptop's setting search for WiFi
+  - Select the WiFi connection to see its properties
+  - Scroll down until you see the IPv4 address
+  - (If you can't find it, you can go to https://www.whatismyip.com/ and find the number there)
+3. **Open the OSC controller app on the iPad**
+4. **Go to settings and check the port and IP address**
+  - Port should match the number at Network Port from the oscin1 operator in TouchDesigner (usually 7000)
+  - IP address should match the IP address of the laptop
+  - Start the connection and close the settings
+5. **Open TouchDesigner on the laptop and check for signal**
+  - Press the 'Play' button in the bottom bar in TouchDesigner
+  - The OSC controller app, start sending signals by moving your fingers across the screen
+  - You should see the data of the movements in the TouchDesigner operators and view output
+
