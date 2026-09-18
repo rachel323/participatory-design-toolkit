@@ -8,7 +8,7 @@ router.post("/:id/vibrate", async (req, res) => {
     const motors = {
         1: "192.168.1.66", //de blauwe
         2: "192.168.1.73", //de roze
-        3: "192.168.1.103"
+        3: "192.168.1.232" //oranje 
     };
 
     const ip = motors[req.params.id];

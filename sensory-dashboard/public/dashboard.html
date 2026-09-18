@@ -3,16 +3,21 @@
 <head>
     <title>Wizard Control Dashboard</title>
     <link rel="stylesheet" href="/styles.css">
+    <form action="/stop-session" method="POST" style="text-align: right;">
+        <button type="submit" class="stop-button">Stop Session</button>
+    </form>
 </head>
 <body>
     <h1>Wizard Control Dashboard</h1>
-    <form action="/stop-session" method="POST" style="text-align: right;">
-        <button type="submit" class="stop-button">Stop Sessie</button>
-    </form>
+    
+</head>
+<body>
+    
+    
 
     <div id="dashboardSections">
         <!-- WLED Controls -->
-        <div class="section" id="ledStripSection">
+        <div class="section" id="ledStripSection" style="background-color: beige;">
             <h2>LED Strip</h2>
             <button onclick="sendWLEDCommand('on', 'LED AAN')">On</button>
             <button onclick="sendWLEDCommand('off', 'LED UIT')">Off</button>
@@ -35,49 +40,61 @@
             </div>
         </div>
 
-        <!-- Sound Controls -->
-        <div class="section" id="soundSection">
-            <h2>Sound</h2>
-            <!-- make sure the correct soundfiles are in the 'sounds' folder in the project 
-            also check this at the KEYMAP section below for sounds triggered by keys-->
-            <div class="subsection">
-                <h3>Music</h3>
-                <button data-file="/sounds/bg_jazz.mp3" onclick="playMusic('/sounds/bg_jazz.mp3', this)">Jazz</button>
-                <button data-file="/sounds/bg_classical.wav" onclick="playMusic('/sounds/bg_classical.wav', this)">Impressionistic</button>
-                <button data-file="/sounds/bg_sitar.mp3" onclick="playMusic('/sounds/bg_sitar.mp3', this)">Sitar</button>
-                <button data-file="/sounds/bg_mystery-bells.mp3" onclick="playMusic('/sounds/bg_mystery-bells.mp3', this)">Mystery</button>
-                <button data-file="/sounds/bg_happy-upbeat.mp3" onclick="playMusic('/sounds/bg_happy-upbeat.mp3', this)">Happy</button>
-                <button data-file="/sounds/bg_action.mp3" onclick="playMusic('/sounds/bg_action.mp3', this)">Action</button>
+        <div class="side-by-side-panels">
+            <!-- Sound Controls -->
+            <div class="section" id="soundSection" style="background-color: rgb(255, 220, 240);">
+                <h2>Sound</h2>
+                <!-- make sure the correct soundfiles are in the 'sounds' folder in the project 
+                also check this at the KEYMAP section below for sounds triggered by keys-->
+                
+                <div class="subsection">
+                    <h3>Music adjustments</h3>
+                    <p> Low-pass: <span id="lowpassValue">20000</span> Hz
+                    &emsp; High-pass: <span id="highpassValue">20</span> Hz
+                    &emsp; Playback Rate: <span id="playbackValue">1.00</span> 
+                    &emsp; Volume: don't know yet
+                    </p>
+                </div>
+
+                <div class="subsection">
+                    <h3>Music</h3>
+                    <div class="music-grid">
+                        <button data-file="/sounds/bg_jazz.mp3" onclick="playMusic('/sounds/bg_jazz.mp3', this)">Jazz</button>
+                        <button data-file="/sounds/bg_sitar.mp3" onclick="playMusic('/sounds/bg_sitar.mp3', this)">Sitar</button>
+                        <button data-file="/sounds/bg_happy-upbeat.mp3" onclick="playMusic('/sounds/bg_happy-upbeat.mp3', this)">Happy</button>
+                        <button data-file="/sounds/bg_classical.wav" onclick="playMusic('/sounds/bg_classical.wav', this)">Classical</button>
+                        <button data-file="/sounds/bg_mystery-bells.mp3" onclick="playMusic('/sounds/bg_mystery-bells.mp3', this)">Mystery</button>
+                        <button data-file="/sounds/bg_action.mp3" onclick="playMusic('/sounds/bg_action.mp3', this)">Action</button>
+                    </div>
+                </div>
+
+
+                <div class="subsection">
+                    <h3>Sound effects</h3>
+                    <div class="music-grid">
+                        <button onclick="playSfx('/sounds/sfx_pling.wav', this)">Pling</button>
+                        <button onclick="playSfx('/sounds/sfx_plop.mp3', this)">Plop</button>
+                        <button onclick="playSfx('/sounds/sfx_honk.wav', this)">Honk</button>
+                        <button onclick="playSfx('/sounds/sfx_whoosh.mp3', this)">Whoosh</button>
+                        <button onclick="playSfx('/sounds/sfx_spring.mp3', this)">Spring</button>
+                        <button onclick="playSfx('/sounds/sfx_drum.wav', this)">Drum</button>
+                    </div>
+                </div>
             </div>
 
-            <div class="subsection">
-                <h3>Music adjustments</h3>
-                <p>Playback Rate: <span id="playbackValue">1.00</span>
-                &emsp; Low-pass: <span id="lowpassValue">20000</span> Hz
-                &emsp; High-pass: <span id="highpassValue">20</span> Hz</p>
+            <!-- Haptics Controls -->
+            <div class="section" id="hapticsSection" style="background-color: rgb(243, 254, 238);">
+                    <h2>Haptics</h2>
+                    <h3> Single vibration</h3>
+                    <div class="haptics-grid"> 
+                        <button onclick="vibrateMotor(1)" style="background-color: rgb(0, 191, 255);"></button>
+                        <button onclick="vibrateMotor(2)" style="background-color: rgb(245, 75, 168);"></button>
+                        <button onclick="vibrateMotor(3)" style="background-color: rgb(9, 207, 9); color: white;"></button>
+                        <button onclick="vibrateMotor(4)" style="background-color: rgb(254, 147, 15);"></button>
+                    </div>
+
+                    <h3> Vibration pattern</h3>
             </div>
-
-            <div class="subsection">
-                <h3>Sound effects</h3>
-                <button onclick="playSfx('/sounds/sfx_pling.wav', this)">Pling</button>
-                <button onclick="playSfx('/sounds/sfx_plop.mp3', this)">Plop</button>
-                <button onclick="playSfx('/sounds/sfx_honk.wav', this)">Honk</button>
-                <button onclick="playSfx('/sounds/sfx_whoosh.mp3', this)">Whoosh</button>
-                <button onclick="playSfx('/sounds/sfx_spring.mp3', this)">Spring</button>
-                <button onclick="playSfx('/sounds/sfx_drum.wav', this)">Drum</button>
-            </div>
-        </div>
-
-        <!-- Haptics Controls -->
-        <div class="section" id="hapticsSection">
-                <h2>Haptics</h2>
-
-                <button onclick="vibrateMotor(1)" style="background-color: rgb(0, 191, 255);">Blue</button>
-                <button onclick="vibrateMotor(2)" style="background-color: rgb(245, 75, 168);">Pink</button>
-                <button onclick="vibrateMotor(3)" style="background-color: rgb(9, 207, 9); color: white;">Green</button>
-                <button onclick="vibrateMotor(4)" style="background-color: rgb(254, 147, 15);">Orange</button>
-
-             
         </div>
     </div>
 

@@ -1415,5 +1415,37 @@
     "details": {
       "soundFile": "/sounds/sfx_drum.wav"
     }
+  },
+  {
+    "timestamp": "2026-09-18T13:47:22.828Z",
+    "sessionId": "1",
+    "action": "PLAY_MUSIC",
+    "details": {
+      "soundFile": "/sounds/bg_classical.wav"
+    }
+  },
+  {
+    "timestamp": "2026-09-18T13:47:33.372Z",
+    "sessionId": "1",
+    "action": "PLAY_MUSIC",
+    "details": {
+      "soundFile": "/sounds/bg_mystery-bells.mp3"
+    }
+  },
+  {
+    "timestamp": "2026-09-18T13:48:14.457Z",
+    "sessionId": "1",
+    "action": "PLAY_MUSIC",
+    "details": {
+      "soundFile": "/sounds/bg_sitar.mp3"
+    }
+  },
+  {
+    "timestamp": "2026-09-18T13:48:23.035Z",
+    "sessionId": "1",
+    "action": "PLAY_MUSIC",
+    "details": {
+      "soundFile": "/sounds/bg_sitar.mp3"
+    }
   }
 ]
