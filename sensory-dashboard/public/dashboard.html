@@ -93,7 +93,22 @@
                         <button onclick="vibrateMotor(4)" style="background-color: rgb(254, 147, 15);"></button>
                     </div>
 
-                    <h3> Vibration pattern</h3>
+                    <div class="subsection">
+                        <h3>Vibration pattern</h3>
+                        <label>
+                            Duration
+                            <input type="range" id="patternDuration" min="50" max="2000" step="10" value="250">
+                            <span id="patternDurationValue">250</span> ms
+                        </label>
+                        <br>
+                        <label>
+                            Interval
+                            <input type="range" id="patternInterval" min="50" max="2000" step="10" value="400">
+                            <span id="patternIntervalValue">400</span> ms
+                        </label>
+                        <br>
+                        <button id="patternToggle" onclick="toggleVibrationPattern()">Pattern: OFF</button>
+                    </div>
             </div>
         </div>
     </div>
@@ -423,6 +438,51 @@
                 console.error(error);
             });
         }
+
+        const patternMotorId = 1;
+        let patternEnabled = false;
+
+        function updatePatternDisplay() {
+            const duration = document.getElementById('patternDuration').value;
+            const interval = document.getElementById('patternInterval').value;
+            document.getElementById('patternDurationValue').textContent = duration;
+            document.getElementById('patternIntervalValue').textContent = interval;
+
+            if (!patternEnabled) {
+                document.getElementById('patternToggle').textContent = 'Pattern: OFF';
+            }
+        }
+
+        function toggleVibrationPattern() {
+            const duration = Number(document.getElementById('patternDuration').value);
+            const interval = Number(document.getElementById('patternInterval').value);
+
+            patternEnabled = !patternEnabled;
+
+            fetch(`/api/motor/${patternMotorId}/pattern`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    on: patternEnabled,
+                    duration,
+                    interval
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Pattern update:', data);
+                document.getElementById('patternToggle').textContent = patternEnabled ? 'Pattern: ON' : 'Pattern: OFF';
+            })
+            .catch(error => {
+                console.error('Pattern update failed:', error);
+            });
+        }
+
+        document.getElementById('patternDuration').addEventListener('input', updatePatternDisplay);
+        document.getElementById('patternInterval').addEventListener('input', updatePatternDisplay);
+        updatePatternDisplay();
         
         //----------------------------LOGGING---------------------------------
 

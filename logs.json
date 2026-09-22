@@ -190,5 +190,53 @@
     "details": {
       "soundFile": "/sounds/bg_mystery-bells.mp3"
     }
+  },
+  {
+    "timestamp": "2026-09-21T10:15:22.074Z",
+    "sessionId": "2",
+    "action": "PLAY_SOUND",
+    "details": {
+      "soundFile": "/sounds/sfx_pling.wav"
+    }
+  },
+  {
+    "timestamp": "2026-09-21T10:15:23.915Z",
+    "sessionId": "2",
+    "action": "PLAY_MUSIC",
+    "details": {
+      "soundFile": "/sounds/bg_happy-upbeat.mp3"
+    }
+  },
+  {
+    "timestamp": "2026-09-21T10:16:58.014Z",
+    "sessionId": "2",
+    "action": "PLAY_MUSIC",
+    "details": {
+      "soundFile": "/sounds/bg_sitar.mp3"
+    }
+  },
+  {
+    "timestamp": "2026-09-21T10:17:14.151Z",
+    "sessionId": "2",
+    "action": "PLAY_MUSIC",
+    "details": {
+      "soundFile": "/sounds/bg_action.mp3"
+    }
+  },
+  {
+    "timestamp": "2026-09-21T10:17:17.348Z",
+    "sessionId": "2",
+    "action": "PLAY_SOUND",
+    "details": {
+      "soundFile": "/sounds/sfx_honk.wav"
+    }
+  },
+  {
+    "timestamp": "2026-09-21T10:17:46.866Z",
+    "sessionId": "2",
+    "action": "PLAY_SOUND",
+    "details": {
+      "soundFile": "/sounds/sfx_pling.wav"
+    }
   }
 ]

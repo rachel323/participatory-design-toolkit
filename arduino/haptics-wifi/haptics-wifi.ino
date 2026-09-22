@@ -5,8 +5,8 @@
 // install esp32 board for the c3 dev module
 
 //use the same wifi the laptop will be using
-const char* ssid = "Hotspot12";
-const char* password = "Co-Intend2026";
+const char* ssid = "hetInternet_2G";
+const char* password = "CaptainMorgan27";
 
 WebServer server(80);
 
@@ -22,6 +22,25 @@ void vibrate() {
 
   digitalWrite(motorPin, LOW);
   Serial.println("LOW");
+
+  server.send(200, "text/plain", "OK");
+}
+
+bool patternEnabled = false;
+int patternDuration = 250;
+int patternInterval = 400;
+
+void vibratePattern(boolean on, int duration, int interval) {
+  patternEnabled = on;
+  patternDuration = duration;
+  patternInterval = interval;
+
+  Serial.print("Pattern enabled: ");
+  Serial.println(patternEnabled ? "true" : "false");
+  Serial.print("Pattern duration: ");
+  Serial.println(patternDuration);
+  Serial.print("Pattern interval: ");
+  Serial.println(patternInterval);
 
   server.send(200, "text/plain", "OK");
 }
@@ -46,6 +65,13 @@ void setup() {
   Serial.println(WiFi.localIP());
 
   server.on("/vibrate", vibrate);
+  server.on("/pattern", []() {
+    boolean on = server.arg("on").equalsIgnoreCase("true");
+    int duration = server.arg("duration").toInt();
+    int interval = server.arg("interval").toInt();
+
+    vibratePattern(on, duration, interval);
+  });
 
   server.begin();
   Serial.println("Webserver gestart");
@@ -53,4 +79,14 @@ void setup() {
 
 void loop() {
   server.handleClient();
+
+  if (patternEnabled) {
+    digitalWrite(motorPin, HIGH);
+    Serial.println("HIGH");
+    delay(patternDuration);
+
+    digitalWrite(motorPin, LOW);
+    Serial.println("LOW");
+    delay(patternInterval);
+  }
 }
