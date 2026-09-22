@@ -19,20 +19,20 @@ if (!fs.existsSync(soundsDir)) {
 // Lijst van bestaande geluiden (statisch, gebaseerd op je HTML)
 const existingSounds = {
   music: [
-    { id: 'bg_jazz.mp3', name: 'Jazz' },
-    { id: 'bg_classical.wav', name: 'Impressionistic' },
-    { id: 'bg_sitar.mp3', name: 'Sitar' },
-    { id: 'bg_mystery-bells.mp3', name: 'Mystery' },
-    { id: 'bg_happy-upbeat.mp3', name: 'Happy' },
-    { id: 'bg_action.mp3', name: 'Action' }
+    { id: 'bg_1.wav', name: '1' },
+    { id: 'bg_2.wav', name: '2' },
+    { id: 'bg_3.wav', name: '3' },
+    { id: 'bg_4.wav', name: '4' },
+    { id: 'bg_5.wav', name: '5' },
+    { id: 'bg_6.wav', name: '6' }
   ],
   sfx: [
-    { id: 'sfx_pling.wav', name: 'Pling' },
-    { id: 'sfx_plop.mp3', name: 'Plop' },
-    { id: 'sfx_honk.wav', name: 'Honk' },
-    { id: 'sfx_whoosh.mp3', name: 'Whoosh' },
-    { id: 'sfx_spring.mp3', name: 'Spring' },
-    { id: 'sfx_drum.wav', name: 'Drum' }
+    { id: 'sfx_1.1.wav', name: 'Pling' },
+    { id: 'sfx_1.2.wav', name: 'Plop' },
+    { id: 'sfx_1.3.wav', name: 'Honk' },
+    { id: 'sfx_2.1.wav', name: 'Whoosh' },
+    { id: 'sfx_2.2.wav', name: 'Spring' },
+    { id: 'sfx_2.3.wav', name: 'Drum' }
   ]
 };
 

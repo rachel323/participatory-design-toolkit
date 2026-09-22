@@ -3,17 +3,16 @@
 <head>
     <title>Wizard Control Dashboard</title>
     <link rel="stylesheet" href="/styles.css">
-    <form action="/stop-session" method="POST" style="text-align: right;">
-        <button type="submit" class="stop-button">Stop Session</button>
-    </form>
 </head>
 <body>
+    <div class="top-bar">
+        <a href="/" class="home-button">Back to home</a>
+        <form action="/stop-session" method="POST" class="top-right-form">
+            <button type="submit" class="stop-button">Stop session</button>
+        </form>
+    </div>
+
     <h1>Wizard Control Dashboard</h1>
-    
-</head>
-<body>
-    
-    
 
     <div id="dashboardSections">
         <!-- WLED Controls -->
@@ -59,12 +58,12 @@
                 <div class="subsection">
                     <h3>Music</h3>
                     <div class="music-grid">
-                        <button data-file="/sounds/bg_jazz.mp3" onclick="playMusic('/sounds/bg_jazz.mp3', this)">Jazz</button>
-                        <button data-file="/sounds/bg_sitar.mp3" onclick="playMusic('/sounds/bg_sitar.mp3', this)">Sitar</button>
-                        <button data-file="/sounds/bg_happy-upbeat.mp3" onclick="playMusic('/sounds/bg_happy-upbeat.mp3', this)">Happy</button>
-                        <button data-file="/sounds/bg_classical.wav" onclick="playMusic('/sounds/bg_classical.wav', this)">Classical</button>
-                        <button data-file="/sounds/bg_mystery-bells.mp3" onclick="playMusic('/sounds/bg_mystery-bells.mp3', this)">Mystery</button>
-                        <button data-file="/sounds/bg_action.mp3" onclick="playMusic('/sounds/bg_action.mp3', this)">Action</button>
+                        <button data-file="/sounds/bg_1.wav" onclick="playMusic('/sounds/bg_1.wav', this)">One</button>
+                        <button data-file="/sounds/bg_2.wav" onclick="playMusic('/sounds/bg_2.wav', this)">Two</button>
+                        <button data-file="/sounds/bg_3.wav" onclick="playMusic('/sounds/bg_3.wav', this)">Three</button>
+                        <button data-file="/sounds/bg_4.wav" onclick="playMusic('/sounds/bg_4.wav', this)">Four</button>
+                        <button data-file="/sounds/bg_5.wav" onclick="playMusic('/sounds/bg_5.wav', this)">Five</button>
+                        <button data-file="/sounds/bg_6.wav" onclick="playMusic('/sounds/bg_6.wav', this)">Six</button>
                     </div>
                 </div>
 
@@ -72,12 +71,12 @@
                 <div class="subsection">
                     <h3>Sound effects</h3>
                     <div class="music-grid">
-                        <button onclick="playSfx('/sounds/sfx_pling.wav', this)">Pling</button>
-                        <button onclick="playSfx('/sounds/sfx_plop.mp3', this)">Plop</button>
-                        <button onclick="playSfx('/sounds/sfx_honk.wav', this)">Honk</button>
-                        <button onclick="playSfx('/sounds/sfx_whoosh.mp3', this)">Whoosh</button>
-                        <button onclick="playSfx('/sounds/sfx_spring.mp3', this)">Spring</button>
-                        <button onclick="playSfx('/sounds/sfx_drum.wav', this)">Drum</button>
+                        <button onclick="playSfx('/sounds/sfx_1.1.wav', this)">Pling</button>
+                        <button onclick="playSfx('/sounds/sfx_1.2.wav', this)">Plop</button>
+                        <button onclick="playSfx('/sounds/sfx_1.3.wav', this)">Honk</button>
+                        <button onclick="playSfx('/sounds/sfx_2.1.wav', this)">Whoosh</button>
+                        <button onclick="playSfx('/sounds/sfx_2.2.wav', this)">Spring</button>
+                        <button onclick="playSfx('/sounds/sfx_2.3.wav', this)">Drum</button>
                     </div>
                 </div>
             </div>
@@ -218,8 +217,7 @@
 
         // ======================= MUSIC =======================
 
-        let currentMusic = null;
-        let currentMusicButton = null;
+        const activeMusic = new Map();
 
         const audioContext = new AudioContext();
 
@@ -231,92 +229,83 @@
         highpass.type = "highpass";
         highpass.frequency.value = 20;
 
-        let source;
         let playbackRate = 1.0;
 
         let lowpassFreq = 20000;
         let highpassFreq = 20;
 
-        
+        function findMusicButton(filePath) {
+            const buttons = document.querySelectorAll('[data-file]');
 
-        function playMusic(filePath, buttonElement = null) {
-
-            // Look up the dashboard button (if triggered by keypad button)
-            if (!buttonElement) {
-                buttonElement = document.querySelector(
-                    `[data-file="${filePath}"]`
-                );
-            }
-
-            // AudioContext activeren (vereist door sommige browsers)
-            if (audioContext.state === "suspended") {
-                audioContext.resume();
-            }
-
-            // If same button that was already playing is pressed -> stop it
-            if (currentMusic && currentMusic.src.includes(filePath)) {
-
-                currentMusic.pause();
-                currentMusic.currentTime = 0;
-
-                if (currentMusicButton) {
-                    currentMusicButton.classList.remove("active");
+            for (const button of buttons) {
+                if (button.dataset.file === filePath) {
+                    return button;
                 }
+            }
 
-                currentMusic = null;
-                currentMusicButton = null;
+            return null;
+        }
 
+        function setMusicButtonState(filePath, isActive, explicitButton = null) {
+            const button = explicitButton || findMusicButton(filePath);
+
+            if (!button) {
                 return;
             }
 
-            // If other music was already playing -> stop it
-            if (currentMusic) {
+            button.classList.toggle('active', isActive);
+        }
 
-                currentMusic.pause();
-                currentMusic.currentTime = 0;
+        function stopMusicFile(filePath) {
+            const activeTrack = activeMusic.get(filePath);
 
-                if (currentMusicButton) {
-                    currentMusicButton.classList.remove("active");
-                }
+            if (!activeTrack) {
+                return;
+            }
+
+            activeTrack.audio.pause();
+            activeTrack.audio.currentTime = 0;
+
+            if (activeTrack.source) {
+                activeTrack.source.disconnect();
+            }
+
+            setMusicButtonState(filePath, false, activeTrack.buttonElement);
+            activeMusic.delete(filePath);
+        }
+
+        function playMusic(filePath, buttonElement = null) {
+            if (activeMusic.has(filePath)) {
+                stopMusicFile(filePath);
+                return;
+            }
+
+            if (audioContext.state === "suspended") {
+                audioContext.resume();
             }
 
             const audio = new Audio(filePath);
             audio.loop = true;
             audio.playbackRate = playbackRate;
 
-            // disconnect old source
-            if (source) {
-                source.disconnect();
-            }
+            const source = audioContext.createMediaElementSource(audio);
 
-
-            // Reset audio settings voor nieuwe track
-            playbackRate = 1.0;
-            lowpassFreq = 20000;
-            highpassFreq = 20;
-
-            lowpass.frequency.value = lowpassFreq;
-            highpass.frequency.value = highpassFreq;
-
-            // Dashboard verversen
-            updateAudioDashboard();
-
-            // make new source
-            source = audioContext.createMediaElementSource(audio);
-
-            // Audio route:
-            // source -> highpass -> lowpass -> speakers
             source.connect(highpass);
             highpass.connect(lowpass);
             lowpass.connect(audioContext.destination);
 
             audio.play().catch(err => console.error(err));
 
-            currentMusic = audio;
-            currentMusicButton = buttonElement;
+            const resolvedButton = buttonElement || findMusicButton(filePath);
 
-            if (buttonElement) {
-                buttonElement.classList.add("active");
+            activeMusic.set(filePath, {
+                audio,
+                source,
+                buttonElement: resolvedButton
+            });
+
+            if (resolvedButton) {
+                resolvedButton.classList.add("active");
             }
 
             logAction("PLAY_MUSIC", {
@@ -324,7 +313,6 @@
             });
         }
 
-        
         //update de knopbewegingen in het dashboard
         function updateAudioDashboard() {
             document.getElementById("playbackValue").textContent =
@@ -358,22 +346,22 @@
 
         // music is mapped to the second row of keys
         const musicKeyMap = {
-            'a': '/sounds/bg_jazz.mp3',
-            's': '/sounds/bg_classical.wav',
-            'd': '/sounds/bg_sitar.mp3',
-            'f': '/sounds/bg_mystery-bells.mp3',
-            'g': '/sounds/bg_happy-upbeat.mp3',
-            'h': '/sounds/bg_action.mp3'
+            'a': '/sounds/bg_1.wav',
+            's': '/sounds/bg_2.wav',
+            'd': '/sounds/bg_3.wav',
+            'f': '/sounds/bg_4.wav',
+            'g': '/sounds/bg_5.wav',
+            'h': '/sounds/bg_6.wav'
         };
 
             //sound effects are mapped to the numpad numbers
         const sfxKeyMap = {
-            '1': '/sounds/sfx_pling.wav',
-            '2': '/sounds/sfx_plop.mp3',      
-            '3': '/sounds/sfx_honk.wav',
-            '4': '/sounds/sfx_whoosh.mp3',
-            '5': '/sounds/sfx_spring.mp3',
-            '6': '/sounds/sfx_drum.wav'
+            '1': '/sounds/sfx_1.1.wav',
+            '2': '/sounds/sfx_1.2.wav',      
+            '3': '/sounds/sfx_1.3.wav',
+            '4': '/sounds/sfx_2.1.wav',
+            '5': '/sounds/sfx_2.2.wav',
+            '6': '/sounds/sfx_2.3.wav'
         };
 
         // ======================= KEYBOARD =======================
@@ -391,7 +379,9 @@
             // ---------- Muziek ----------
             if (musicKeyMap[key]) {
                 event.preventDefault();
-                playMusic(musicKeyMap[key]); //Provide the soundfile and the button on the dashboard
+                const filePath = musicKeyMap[key];
+                const matchingButton = findMusicButton(filePath);
+                playMusic(filePath, matchingButton);
                 return;
             }
 
@@ -403,7 +393,7 @@
             }
 
             // ---------- Effect sliders ----------
-            if (currentMusic) {
+            if (activeMusic.size > 0) {
 
                 switch (event.key) {
 
@@ -411,7 +401,9 @@
                     case "ArrowUp":
                         event.preventDefault();
                         playbackRate = Math.min(2.0, playbackRate + 0.05);
-                        currentMusic.playbackRate = playbackRate;
+                        activeMusic.forEach(({ audio }) => {
+                            audio.playbackRate = playbackRate;
+                        });
                         updateAudioDashboard();
                         console.log("Playback:", playbackRate.toFixed(2));
                         break;
@@ -420,7 +412,9 @@
                     case "ArrowDown":
                         event.preventDefault();
                         playbackRate = Math.max(0.5, playbackRate - 0.05);
-                        currentMusic.playbackRate = playbackRate;
+                        activeMusic.forEach(({ audio }) => {
+                            audio.playbackRate = playbackRate;
+                        });
                         updateAudioDashboard();
                         console.log("Playback:", playbackRate.toFixed(2));
                         break;

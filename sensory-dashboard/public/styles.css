@@ -130,15 +130,55 @@ button {
     margin: 20px auto;
 }
 
+.top-bar {
+    position: fixed;
+    top: 10px;
+    left: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    z-index: 1000;
+}
+
+.top-right-form {
+    margin-left: auto;
+}
+
+.home-button {
+    display: inline-block;
+    background-color: #4aa565;
+    color: white;
+    padding: 10px 16px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.home-button:hover {
+    background-color: #368c50;
+    color: white;
+}
+
 .stop-button {
+    display: inline-block;
     background-color: #f44336;
     color: white;
-    float: right;
+    padding: 10px 16px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.stop-button:hover {
+    background-color: #cf3d33;
+    color: white;
 }
 
 /* Active buttons (sound is playing) */
 button.active {
-    background-color: #c6c6c6; /* Light grey */
+    background-color: #c3c3c3; /* Light grey */
     color: white;
     border-color: #c6c6c6;
 }

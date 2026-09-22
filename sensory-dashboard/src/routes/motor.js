@@ -3,10 +3,10 @@ const axios = require("axios");
 const router = express.Router();
 
 const motors = {
-    1: "192.168.1.66", //de blauwe
+    1: "192.168.1.88", //de blauwe
     2: "192.168.1.73", //de roze
-    3: "192.168.1.232", //oranje
-    4: "192.168.1.66" // extra motor slot
+    3: "192.168.1.232", //groen
+    4: "192.168.1.66" // oranje
 };
 
 function validatePatternRequest({ on, duration, interval }) {
