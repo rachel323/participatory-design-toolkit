@@ -85,29 +85,75 @@
             <!-- Haptics Controls -->
             <div class="section" id="hapticsSection" style="background-color: rgb(243, 254, 238);">
                     <h2>Haptics</h2>
-                    <h3> Single vibration</h3>
-                    <div class="haptics-grid"> 
-                        <button onclick="vibrateMotor(1)" style="background-color: rgb(0, 191, 255);"></button>
-                        <button onclick="vibrateMotor(2)" style="background-color: rgb(245, 75, 168);"></button>
-                        <button onclick="vibrateMotor(3)" style="background-color: rgb(9, 207, 9); color: white;"></button>
-                        <button onclick="vibrateMotor(4)" style="background-color: rgb(254, 147, 15);"></button>
-                    </div>
+                    <h3>Single vibration</h3>
+                    <div class="haptics-grid">
+                        <div class="haptics-motor-card">
+                            <button type="button" onclick="vibrateMotor(1)" style="background-color: rgb(0, 191, 255);">Motor 1</button>
+                            <div class="pattern-controls">
+                                <label>
+                                    Duration
+                                    <input type="range" id="patternDuration-1" data-motor-id="1" min="250" max="2000" step="250" value="250">
+                                    <span id="patternDurationValue-1">250</span> ms
+                                </label>
+                                <label>
+                                    Interval
+                                    <input type="range" id="patternInterval-1" data-motor-id="1" min="250" max="2000" step="250" value="250">
+                                    <span id="patternIntervalValue-1">250</span> ms
+                                </label>
+                                <button type="button" class="pattern-toggle" data-motor-id="1" onclick="toggleVibrationPattern(1)">Pattern: OFF</button>
+                            </div>
+                        </div>
 
-                    <div class="subsection">
-                        <h3>Vibration pattern</h3>
-                        <label>
-                            Duration
-                            <input type="range" id="patternDuration" min="50" max="2000" step="10" value="250">
-                            <span id="patternDurationValue">250</span> ms
-                        </label>
-                        <br>
-                        <label>
-                            Interval
-                            <input type="range" id="patternInterval" min="50" max="2000" step="10" value="400">
-                            <span id="patternIntervalValue">400</span> ms
-                        </label>
-                        <br>
-                        <button id="patternToggle" onclick="toggleVibrationPattern()">Pattern: OFF</button>
+                        <div class="haptics-motor-card">
+                            <button type="button" onclick="vibrateMotor(2)" style="background-color: rgb(245, 75, 168);">Motor 2</button>
+                            <div class="pattern-controls">
+                                <label>
+                                    Duration
+                                    <input type="range" id="patternDuration-2" data-motor-id="2" min="250" max="2000" step="250" value="250">
+                                    <span id="patternDurationValue-2">250</span> ms
+                                </label>
+                                <label>
+                                    Interval
+                                    <input type="range" id="patternInterval-2" data-motor-id="2" min="250" max="2000" step="250" value="250">
+                                    <span id="patternIntervalValue-2">250</span> ms
+                                </label>
+                                <button type="button" class="pattern-toggle" data-motor-id="2" onclick="toggleVibrationPattern(2)">Pattern: OFF</button>
+                            </div>
+                        </div>
+
+                        <div class="haptics-motor-card">
+                            <button type="button" onclick="vibrateMotor(3)" style="background-color: rgb(9, 207, 9); color: white;">Motor 3</button>
+                            <div class="pattern-controls">
+                                <label>
+                                    Duration
+                                    <input type="range" id="patternDuration-3" data-motor-id="3" min="250" max="2000" step="250" value="250">
+                                    <span id="patternDurationValue-3">250</span> ms
+                                </label>
+                                <label>
+                                    Interval
+                                    <input type="range" id="patternInterval-3" data-motor-id="3" min="250" max="2000" step="250" value="250">
+                                    <span id="patternIntervalValue-3">250</span> ms
+                                </label>
+                                <button type="button" class="pattern-toggle" data-motor-id="3" onclick="toggleVibrationPattern(3)">Pattern: OFF</button>
+                            </div>
+                        </div>
+
+                        <div class="haptics-motor-card">
+                            <button type="button" onclick="vibrateMotor(4)" style="background-color: rgb(254, 147, 15);">Motor 4</button>
+                            <div class="pattern-controls">
+                                <label>
+                                    Duration
+                                    <input type="range" id="patternDuration-4" data-motor-id="4" min="250" max="2000" step="250" value="250">
+                                    <span id="patternDurationValue-4">250</span> ms
+                                </label>
+                                <label>
+                                    Interval
+                                    <input type="range" id="patternInterval-4" data-motor-id="4" min="250" max="2000" step="250" value="250">
+                                    <span id="patternIntervalValue-4">250</span> ms
+                                </label>
+                                <button type="button" class="pattern-toggle" data-motor-id="4" onclick="toggleVibrationPattern(4)">Pattern: OFF</button>
+                            </div>
+                        </div>
                     </div>
             </div>
         </div>
@@ -439,50 +485,55 @@
             });
         }
 
-        const patternMotorId = 1;
-        let patternEnabled = false;
+        const patternState = {};
 
-        function updatePatternDisplay() {
-            const duration = document.getElementById('patternDuration').value;
-            const interval = document.getElementById('patternInterval').value;
-            document.getElementById('patternDurationValue').textContent = duration;
-            document.getElementById('patternIntervalValue').textContent = interval;
+        function updatePatternDisplay(motorId) {
+            const duration = document.getElementById(`patternDuration-${motorId}`).value;
+            const interval = document.getElementById(`patternInterval-${motorId}`).value;
 
-            if (!patternEnabled) {
-                document.getElementById('patternToggle').textContent = 'Pattern: OFF';
+            document.getElementById(`patternDurationValue-${motorId}`).textContent = duration;
+            document.getElementById(`patternIntervalValue-${motorId}`).textContent = interval;
+
+            const toggle = document.querySelector(`.pattern-toggle[data-motor-id="${motorId}"]`);
+            if (toggle && !patternState[motorId]) {
+                toggle.textContent = 'Pattern: OFF';
             }
         }
 
-        function toggleVibrationPattern() {
-            const duration = Number(document.getElementById('patternDuration').value);
-            const interval = Number(document.getElementById('patternInterval').value);
+        function toggleVibrationPattern(motorId) {
+            const duration = Number(document.getElementById(`patternDuration-${motorId}`).value);
+            const interval = Number(document.getElementById(`patternInterval-${motorId}`).value);
+            const toggle = document.querySelector(`.pattern-toggle[data-motor-id="${motorId}"]`);
+            const nextState = !Boolean(patternState[motorId]);
 
-            patternEnabled = !patternEnabled;
+            patternState[motorId] = nextState;
 
-            fetch(`/api/motor/${patternMotorId}/pattern`, {
+            fetch(`/api/motor/${motorId}/pattern`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    on: patternEnabled,
+                    on: nextState,
                     duration,
                     interval
                 })
             })
             .then(response => response.json())
             .then(data => {
-                console.log('Pattern update:', data);
-                document.getElementById('patternToggle').textContent = patternEnabled ? 'Pattern: ON' : 'Pattern: OFF';
+                console.log(`Pattern update for motor ${motorId}:`, data);
+                toggle.textContent = nextState ? 'Pattern: ON' : 'Pattern: OFF';
             })
             .catch(error => {
-                console.error('Pattern update failed:', error);
+                console.error(`Pattern update failed for motor ${motorId}:`, error);
             });
         }
 
-        document.getElementById('patternDuration').addEventListener('input', updatePatternDisplay);
-        document.getElementById('patternInterval').addEventListener('input', updatePatternDisplay);
-        updatePatternDisplay();
+        [1, 2, 3, 4].forEach((motorId) => {
+            document.getElementById(`patternDuration-${motorId}`).addEventListener('input', () => updatePatternDisplay(motorId));
+            document.getElementById(`patternInterval-${motorId}`).addEventListener('input', () => updatePatternDisplay(motorId));
+            updatePatternDisplay(motorId);
+        });
         
         //----------------------------LOGGING---------------------------------
 

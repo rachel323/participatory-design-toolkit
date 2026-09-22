@@ -64,20 +64,49 @@ h2 {
 
 .haptics-grid {
     display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 12px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
     margin-top: 10px;
 }
 
+.haptics-motor-card {
+    border: 1px solid #d0d0d0;
+    border-radius: 8px;
+    padding: 12px;
+    background: rgba(255, 255, 255, 0.3);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
 .haptics-grid button {
-    width: 90%;
-    min-height: 60px;
+    width: 100%;
+    min-height: 50px;
     margin: 0;
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
     box-sizing: border-box;
+}
+
+.pattern-controls {
+    display: grid;
+    gap: 8px;
+}
+
+.pattern-controls label {
+    display: grid;
+    gap: 4px;
+    font-size: 0.9rem;
+}
+
+.pattern-controls input[type="range"] {
+    width: 100%;
+}
+
+.pattern-toggle {
+    margin-top: 6px;
 }
 
 /* Algemene stijl voor knoppen */
