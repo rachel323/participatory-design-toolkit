@@ -48,10 +48,34 @@
                 
                 <div class="subsection">
                     <h3>Music adjustments</h3>
-                    <p> Low-pass: <span id="lowpassValue">20000</span> Hz
-                    &emsp; High-pass: <span id="highpassValue">20</span> Hz
-                    &emsp; Playback Rate: <span id="playbackValue">1.00</span> 
-                    </p>
+                    <div class="audio-knob-row">
+                        <div class="audio-knob-card">
+                            <div class="audio-knob" data-knob="lowpass">
+                                <div class="audio-knob-ring"></div>
+                                <div class="audio-knob-pointer"></div>
+                                <div class="audio-knob-center"></div>
+                            </div>
+                            <div class="audio-knob-label">Low-pass: <span id="lowpassValue">20000</span> Hz</div>
+                        </div>
+
+                        <div class="audio-knob-card">
+                            <div class="audio-knob" data-knob="highpass">
+                                <div class="audio-knob-ring"></div>
+                                <div class="audio-knob-pointer"></div>
+                                <div class="audio-knob-center"></div>
+                            </div>
+                            <div class="audio-knob-label">High-pass: <span id="highpassValue">20</span> Hz</div>
+                        </div>
+
+                        <div class="audio-knob-card">
+                            <div class="audio-knob" data-knob="playback">
+                                <div class="audio-knob-ring"></div>
+                                <div class="audio-knob-pointer"></div>
+                                <div class="audio-knob-center"></div>
+                            </div>
+                            <div class="audio-knob-label">Playback: <span id="playbackValue">1.00</span></div>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="subsection">
@@ -329,7 +353,28 @@
             });
         }
 
+        function mapToKnobAngle(value, min, max) {
+            const clamped = Math.min(max, Math.max(min, value));
+            const percentage = (clamped - min) / (max - min);
+            return -135 + (percentage * 270);
+        }
+
+        function mapLogToKnobAngle(value, min, max) {
+            const clamped = Math.min(max, Math.max(min, value));
+            const percentage = (Math.log(clamped) - Math.log(min)) / (Math.log(max) - Math.log(min));
+            return -135 + (percentage * 270);
+        }
+
         //update de knopbewegingen in het dashboard
+        function applyAudioSettingsToAllActiveTracks() {
+            activeMusic.forEach(({ audio }) => {
+                audio.playbackRate = playbackRate;
+            });
+
+            lowpass.frequency.value = lowpassFreq;
+            highpass.frequency.value = highpassFreq;
+        }
+
         function updateAudioDashboard() {
             document.getElementById("playbackValue").textContent =
                 playbackRate.toFixed(2);
@@ -339,7 +384,24 @@
 
             document.getElementById("highpassValue").textContent =
                 highpassFreq;
+
+            const playbackKnob = document.querySelector('[data-knob="playback"]');
+            if (playbackKnob) {
+                playbackKnob.style.setProperty('--rotation', `${mapToKnobAngle(playbackRate, 0.5, 2.0)}deg`);
+            }
+
+            const lowpassKnob = document.querySelector('[data-knob="lowpass"]');
+            if (lowpassKnob) {
+                lowpassKnob.style.setProperty('--rotation', `${mapLogToKnobAngle(lowpassFreq, 500, 20000)}deg`);
+            }
+
+            const highpassKnob = document.querySelector('[data-knob="highpass"]');
+            if (highpassKnob) {
+                highpassKnob.style.setProperty('--rotation', `${mapLogToKnobAngle(highpassFreq, 20, 5000)}deg`);
+            }
         }
+
+        updateAudioDashboard();
 
         // ======================= SOUND EFFECTS =======================
 
@@ -438,9 +500,7 @@
                     case "ArrowUp":
                         event.preventDefault();
                         playbackRate = Math.min(2.0, playbackRate + 0.05);
-                        activeMusic.forEach(({ audio }) => {
-                            audio.playbackRate = playbackRate;
-                        });
+                        applyAudioSettingsToAllActiveTracks();
                         updateAudioDashboard();
                         console.log("Playback:", playbackRate.toFixed(2));
                         break;
@@ -449,9 +509,7 @@
                     case "ArrowDown":
                         event.preventDefault();
                         playbackRate = Math.max(0.5, playbackRate - 0.05);
-                        activeMusic.forEach(({ audio }) => {
-                            audio.playbackRate = playbackRate;
-                        });
+                        applyAudioSettingsToAllActiveTracks();
                         updateAudioDashboard();
                         console.log("Playback:", playbackRate.toFixed(2));
                         break;
@@ -460,7 +518,7 @@
                     case "ArrowLeft":
                         event.preventDefault();
                         lowpassFreq = Math.max(500, lowpassFreq - 500);
-                        lowpass.frequency.value = lowpassFreq;
+                        applyAudioSettingsToAllActiveTracks();
                         updateAudioDashboard();
                         console.log("Low-pass:", lowpassFreq);
                         break;
@@ -468,7 +526,7 @@
                     case "ArrowRight":
                         event.preventDefault();
                         lowpassFreq = Math.min(20000, lowpassFreq + 500);
-                        lowpass.frequency.value = lowpassFreq;
+                        applyAudioSettingsToAllActiveTracks();
                         updateAudioDashboard();
                         console.log("Low-pass:", lowpassFreq);
                         break;
@@ -477,7 +535,7 @@
                     case "q":
                         event.preventDefault();
                         highpassFreq = Math.min(5000, highpassFreq + 50);
-                        highpass.frequency.value = highpassFreq;
+                        applyAudioSettingsToAllActiveTracks();
                         updateAudioDashboard();
                         console.log("High-pass:", highpassFreq);
                         break;
@@ -486,7 +544,7 @@
                     case "e":
                         event.preventDefault();
                         highpassFreq = Math.max(20, highpassFreq - 50);
-                        highpass.frequency.value = highpassFreq;
+                        applyAudioSettingsToAllActiveTracks();
                         updateAudioDashboard();
                         console.log("High-pass:", highpassFreq);
                         break;
