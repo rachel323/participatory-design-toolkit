@@ -70,12 +70,12 @@
                 <div class="subsection">
                     <h3>Sound effects</h3>
                     <div class="music-grid">
-                        <button onclick="playSfx('/sounds/sfx_1.1.wav', this)">Pling</button>
-                        <button onclick="playSfx('/sounds/sfx_1.2.wav', this)">Plop</button>
-                        <button onclick="playSfx('/sounds/sfx_1.3.wav', this)">Honk</button>
-                        <button onclick="playSfx('/sounds/sfx_2.1.wav', this)">Whoosh</button>
-                        <button onclick="playSfx('/sounds/sfx_2.2.wav', this)">Spring</button>
-                        <button onclick="playSfx('/sounds/sfx_2.3.wav', this)">Drum</button>
+                        <button onclick="playRandomSfx(1)">Pling</button>
+                        <button onclick="playRandomSfx(2)">Plop</button>
+                        <button onclick="playRandomSfx(3)">Honk</button>
+                        <button onclick="playRandomSfx(4)">Whoosh</button>
+                        <button onclick="playRandomSfx(5)">Spring</button>
+                        <button onclick="playRandomSfx(6)">Drum</button>
                     </div>
                 </div>
             </div>
@@ -343,6 +343,27 @@
 
         // ======================= SOUND EFFECTS =======================
 
+        const sfxGroups = {
+            1: ['/sounds/sfx_1.1.wav', '/sounds/sfx_1.2.wav', '/sounds/sfx_1.3.wav'],
+            2: ['/sounds/sfx_2.1.wav', '/sounds/sfx_2.2.wav', '/sounds/sfx_2.3.wav'],
+            3: ['/sounds/sfx_3.1.wav', '/sounds/sfx_3.2.wav'],
+            4: ['/sounds/sfx_4.1.wav', '/sounds/sfx_4.2.wav'],
+            5: ['/sounds/sfx_5.1.wav', '/sounds/sfx_5.2.wav', '/sounds/sfx_5.3.wav'],
+            6: ['/sounds/sfx_6.1.wav', '/sounds/sfx_6.2.wav', '/sounds/sfx_6.3.wav']
+        };
+
+        function getRandomSfx(groupId) {
+            const variants = sfxGroups[groupId] || [];
+            if (!variants.length) return null;
+            return variants[Math.floor(Math.random() * variants.length)];
+        }
+
+        function playRandomSfx(groupId) {
+            const filePath = getRandomSfx(groupId);
+            if (!filePath) return;
+            playSfx(filePath);
+        }
+
         function playSfx(filePath) {
 
             const audio = new Audio(filePath);
@@ -372,12 +393,12 @@
 
             //sound effects are mapped to the numpad numbers
         const sfxKeyMap = {
-            '1': '/sounds/sfx_1.1.wav',
-            '2': '/sounds/sfx_1.2.wav',      
-            '3': '/sounds/sfx_1.3.wav',
-            '4': '/sounds/sfx_2.1.wav',
-            '5': '/sounds/sfx_2.2.wav',
-            '6': '/sounds/sfx_2.3.wav'
+            '1': 1,
+            '2': 2,
+            '3': 3,
+            '4': 4,
+            '5': 5,
+            '6': 6
         };
 
         // ======================= KEYBOARD =======================
@@ -404,7 +425,7 @@
             // ---------- Sound effects ----------
             if (sfxKeyMap[key]) {
                 event.preventDefault();
-                playSfx(sfxKeyMap[key]);
+                playRandomSfx(sfxKeyMap[key]);
                 return;
             }
 
