@@ -15,6 +15,12 @@ Firstly, make sure you have the following programms installed on your laptop:
  | **Arduino IDE** | 2.x | [https://www.arduino.cc/en/software](https://www.arduino.cc/en/software) | For the haptic feedback |
  | **WIN_TOOL (Mini Keyboard)** | - | [https://drive.google.com/file/d/1VTd7M0xR8LRjZ-CGcSx5y-NbOO4VAcL0/view?usp=sharing](https://drive.google.com/file/d/1VTd7M0xR8LRjZ-CGcSx5y-NbOO4VAcL0/view?usp=sharing) | For the audio input device mapping. |
 
+For the visual projection, a touchscreen device will be needed. Depending on whether you want to do this on an Android or Apple device (tablet or phone), you will have to install a different OSC controller app and open a different TouchDesigner file on the laptop. Make sure you install either one of these apps on a touch screen device: 
+ OS | Name | Download Link | Notes |
+ |----------|--------|---------------|-------------|
+ | **Android** | OSC Controller | [https://play.google.com/store/apps/details?id=com.ffsmultimedia.osccontroller&hl=en_SG&pli=1](https://play.google.com/store/apps/details?id=com.ffsmultimedia.osccontroller&hl=en_SG&pli=1) | free, use visuals_android in the touchdesigner folder|
+ | **Apple** | TouchOSC | [https://apps.apple.com/nl/app/touchosc/id1569996730](https://apps.apple.com/nl/app/touchosc/id1569996730) | paid (23 euro), use visuals_apple in the touchdesigner folder |
+
 ---
 ---
 
@@ -117,18 +123,19 @@ In order for the haptic devices to work, the Arduino haptics-wifi.ino script sho
 Once you uploaded the script and charged the batteries the devices should automatically connect to the dashboard once turned on. 
 
 ### **7️⃣ Set up the Visual**
-1. **Make sure the Laptop and iPad are on the same WiFi**
+1. **Make sure the Laptop and touchscreen device are on the same WiFi**
 2. **Check the IP address of the laptop on the WiFi**
   - In the laptop's setting search for WiFi
   - Select the WiFi connection to see its properties
   - Scroll down until you see the IPv4 address
   - (If you can't find it, you can go to https://www.whatismyip.com/ and find the number there)
-3. **Open the OSC controller app on the iPad**
+3. **Open the OSC controller app on the touchscreen device**
 4. **Go to settings and check the port and IP address**
   - Port should match the number at Network Port from the oscin1 operator in TouchDesigner (usually 7000)
   - IP address should match the IP address of the laptop
   - Start the connection and close the settings
 5. **Open TouchDesigner on the laptop and check for signal**
+  - Depending on your touchscreen device, open the android or apple .td file
   - Press the 'Play' button in the bottom bar in TouchDesigner
   - The OSC controller app, start sending signals by moving your fingers across the screen
   - You should see the data of the movements in the TouchDesigner operators and view output
