@@ -1,12 +1,12 @@
 #include <WiFi.h>
 #include <WebServer.h>
 
-// make sure the USB CDC on boot is enabled
+// make sure the USB CDC on boot is enabled to read the serial monitor with the IP
 // install esp32 board for the c3 dev module
 
 //use the same wifi the laptop will be using
-const char* ssid = "hetInternet_2G";
-const char* password = "CaptainMorgan27";
+const char* ssid = "Co-Intend_2.4";
+const char* password = "NeuroDiversity2026";
 
 WebServer server(80);
 

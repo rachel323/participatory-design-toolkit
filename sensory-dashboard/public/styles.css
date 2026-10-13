@@ -81,7 +81,7 @@ h3 {
 }
 
 .motor-vibe-button {
-    min-height: 54px;
+    min-height: 100px;
     margin: 0;
     display: flex;
     align-items: center;
@@ -89,10 +89,10 @@ h3 {
     font-weight: bold;
 }
 
-.motor-1 { background-color: rgb(0, 191, 255); }
-.motor-2 { background-color: rgb(245, 75, 168); }
+.motor-1 { background-color: rgb(0, 191, 255); color: white;}
+.motor-2 { background-color: rgb(245, 75, 168); color: white; }
 .motor-3 { background-color: rgb(9, 207, 9); color: white; }
-.motor-4 { background-color: rgb(254, 147, 15); }
+.motor-4 { background-color: rgb(254, 147, 15); color: white; }
 
 .pattern-grid {
     display: grid;

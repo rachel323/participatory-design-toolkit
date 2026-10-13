@@ -1551,5 +1551,29 @@
     "details": {
       "soundFile": "/sounds/sfx_4.2.wav"
     }
+  },
+  {
+    "timestamp": "2026-10-12T07:43:13.358Z",
+    "sessionId": "3",
+    "action": "PLAY_MUSIC",
+    "details": {
+      "soundFile": "/sounds/bg_2.wav"
+    }
+  },
+  {
+    "timestamp": "2026-10-12T07:43:15.179Z",
+    "sessionId": "3",
+    "action": "PLAY_SOUND",
+    "details": {
+      "soundFile": "/sounds/sfx_3.1.wav"
+    }
+  },
+  {
+    "timestamp": "2026-10-12T07:43:20.317Z",
+    "sessionId": "3",
+    "action": "PLAY_MUSIC",
+    "details": {
+      "soundFile": "/sounds/bg_6.wav"
+    }
   }
 ]
