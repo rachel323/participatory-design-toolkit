@@ -63,7 +63,8 @@ void setup() {
   Serial.println();
   Serial.print("Verbonden! IP-adres: ");
   Serial.println(WiFi.localIP());
-
+  // arduino will print the IP address in the serial monitor, this should be the same in the motor.js file in vsc
+  
   server.on("/vibrate", vibrate);
   server.on("/pattern", []() {
     boolean on = server.arg("on").equalsIgnoreCase("true");
