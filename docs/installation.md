@@ -89,8 +89,9 @@ Now we will be connection the haptics and visual components. These require WiFi 
    - Plug the router in a power socket and press the on button
    - Wait a couple of seconds for the router to start up
 2. **Connect the laptop to the router's WiFi**
-  - Check the IP address of the laptop on the WiFi, this should be...
-3. **Connect the iPad to the router's WiFi**
+  - The laptop should join the Co-Intend_2.4 network with password NeuroDiversity2026
+3. **Connect the iPad/touchscreen device to the router's WiFi**
+  - the device should join the Co-Intend_2.4 network as well
 
 ### **6️⃣ Set up the Haptic Devices**
 In order for the haptic devices to work, the Arduino haptics-wifi.ino script should be uploaded to every ESP and the accus should be charged.
