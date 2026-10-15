@@ -50,6 +50,17 @@ Before starting a test make sure
    - Check whether the iPad is connected to the router's Wi-Fi
 
 ---
+## ⏱️ **Ending a session**
+It is important that after each phase, the logs of that phase are saved. So every time before you switch the wizard role, make sure to stop the current session, download the logs and start a new session.
+
+1. **Press the Stop session button**
+2. **Download the logs as .csv file**
+3. **You can now go back to the startpage to start a new session**
+  - Give each session a recognizable ID so that you can trace back the logs to the video footage.
+  - The logs include time stamps that you can synchronize to the video and audio footage.
+
+
+---
 
 ## 👷 **Personalization and Adaptation**
 
