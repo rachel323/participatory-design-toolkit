@@ -22,6 +22,23 @@ function readLogs() {
     return logs;
 }
 
+function writeLogs(logs, targetPath = logFilePath) {
+    const temporaryPath = `${targetPath}.${process.pid}.${crypto.randomUUID()}.tmp`;
+    try {
+        fs.writeFileSync(temporaryPath, JSON.stringify(logs, null, 2), 'utf8');
+        fs.renameSync(temporaryPath, targetPath);
+    } catch (error) {
+        if (fs.existsSync(temporaryPath)) {
+            fs.unlinkSync(temporaryPath);
+        }
+        throw error;
+    }
+}
+
+function clearLogs(targetPath = logFilePath) {
+    writeLogs([], targetPath);
+}
+
 function logAction(req, action, details = {}) {
     if (typeof action !== 'string' || !action.trim()) {
         throw new TypeError('Log action must be a non-empty string');
@@ -37,17 +54,7 @@ function logAction(req, action, details = {}) {
 
     const logs = readLogs();
     logs.push(logEntry);
-
-    const temporaryPath = `${logFilePath}.${process.pid}.${crypto.randomUUID()}.tmp`;
-    try {
-        fs.writeFileSync(temporaryPath, JSON.stringify(logs, null, 2), 'utf8');
-        fs.renameSync(temporaryPath, logFilePath);
-    } catch (error) {
-        if (fs.existsSync(temporaryPath)) {
-            fs.unlinkSync(temporaryPath);
-        }
-        throw error;
-    }
+    writeLogs(logs);
 }
 
-module.exports = { logAction, readLogs };
+module.exports = { logAction, readLogs, clearLogs };

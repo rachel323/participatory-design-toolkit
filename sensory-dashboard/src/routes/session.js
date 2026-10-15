@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const path = require('path');
-const { logAction, readLogs } = require('../utils/logger');
+const { logAction, readLogs, clearLogs } = require('../utils/logger');
 
 function getSessionLogs(req) {
     const sessionId = req.session?.customSessionId;
@@ -44,20 +44,25 @@ router.get('/', (req, res) => {
 
 // Start sessie
 router.post('/start-session', (req, res) => {
+    const requestedSessionId = typeof req.body.sessionId === 'string'
+        ? req.body.sessionId.trim()
+        : '';
+    const sessionId = requestedSessionId || `session-${Date.now()}`;
+    const startTime = new Date().toISOString();
 
-    req.session.startTime = new Date().toISOString();
-
-    // Gebruik custom ID of fallback
-    req.session.customSessionId =
-        req.body.sessionId || `session-${Date.now()}`;
-
-    logAction(req, 'SESSION_START', {
-        startTime: req.session.startTime
-    });
+    try {
+        clearLogs();
+        req.session.startTime = startTime;
+        req.session.customSessionId = sessionId;
+        logAction(req, 'SESSION_START', { startTime });
+    } catch (error) {
+        console.error('Could not start session and reset dashboard logs:', error);
+        return res.status(500).send('Could not start the session or reset its log. Please try again.');
+    }
 
     console.log(
         'Session gestart:',
-        req.session.customSessionId
+        sessionId
     );
 
     res.redirect('/dashboard.html');
