@@ -4,6 +4,24 @@
     <title>Sensory Dashboard - Logs</title>
     <link rel="stylesheet" href="/styles.css">
     <style>
+        .report-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin: 20px 0;
+        }
+        .report-actions a,
+        .report-actions button {
+            display: inline-block;
+            padding: 10px 15px;
+            border: 0;
+            border-radius: 5px;
+            background: #4caf50;
+            color: white;
+            font: inherit;
+            text-decoration: none;
+            cursor: pointer;
+        }
         .log-entry {
             border: 1px solid #ddd;
             padding: 10px;
@@ -15,11 +33,32 @@
             color: #666;
             font-size: 0.9em;
         }
+        @media print {
+            body {
+                margin: 0;
+                background: white;
+            }
+            .container {
+                max-width: none;
+                box-shadow: none;
+            }
+            .report-actions,
+            .start-button {
+                display: none !important;
+            }
+            .log-entry {
+                break-inside: avoid;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Logs voor deze Sessie</h1>
+        <div class="report-actions">
+            <a href="/api/logs/export.csv">Export for Excel (CSV)</a>
+            <button type="button" onclick="window.print()">Print / Save as PDF</button>
+        </div>
         <div id="logs-container"></div>
         <a href="/welkom.html" class="start-button">Terug naar Start</a>
     </div>
@@ -27,20 +66,35 @@
     <script>
         // Haal logs op voor de huidige sessie
         fetch('/api/logs')
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`Could not load logs (${response.status})`);
+                }
+                return response.json();
+            })
             .then(logs => {
                 const container = document.getElementById('logs-container');
+                if (!logs.length) {
+                    container.textContent = 'No actions were logged for this session.';
+                    return;
+                }
                 logs.forEach(log => {
                     const entry = document.createElement('div');
                     entry.className = 'log-entry';
-                    entry.innerHTML = `
-                        <div class="timestamp">${log.timestamp}</div>
-                        <strong>${log.action}</strong>: ${JSON.stringify(log.details)}
-                    `;
+                    const timestamp = document.createElement('div');
+                    timestamp.className = 'timestamp';
+                    timestamp.textContent = log.timestamp;
+                    const action = document.createElement('strong');
+                    action.textContent = log.action;
+                    entry.append(timestamp, action, document.createTextNode(`: ${JSON.stringify(log.details)}`));
                     container.appendChild(entry);
                 });
             })
-            .catch(error => console.error('Error:', error));
+            .catch(error => {
+                console.error('Error loading session logs:', error);
+                document.getElementById('logs-container').textContent =
+                    'The session logs could not be loaded. Please try again or contact the administrator.';
+            });
     </script>
 </body>
 </html>

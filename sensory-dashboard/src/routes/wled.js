@@ -14,8 +14,6 @@ router.post('/', async (req, res) => {
         return res.status(400).send('Geen commando meegegeven');
     }
 
-    logAction(req, 'WLED_COMMAND', { command, description });
-
     try {
         let jsonPayload = {};
         if (command.includes('on')) jsonPayload.on = true;
@@ -49,10 +47,30 @@ router.post('/', async (req, res) => {
         console.log('Doorsturen naar WLED (JSON):', jsonPayload);
         const wledUrl = 'http://4.3.2.1/json/state';
         const response = await axios.post(wledUrl, jsonPayload);
+        try {
+            logAction(req, 'WLED_COMMAND', {
+                command,
+                description,
+                status: 'success'
+            });
+        } catch (logError) {
+            console.error('WLED command sent but could not be logged:', logError);
+            return res.status(500).send('WLED command was sent, but could not be logged');
+        }
         console.log('WLED reactie status:', response.status);
         res.status(200).send('WLED JSON command sent');
     } catch (error) {
         console.error('Fout bij doorsturen naar WLED:', error.message);
+        try {
+            logAction(req, 'WLED_COMMAND', {
+                command,
+                description,
+                status: 'failed',
+                error: error.message
+            });
+        } catch (logError) {
+            console.error('Could not write WLED failure log:', logError);
+        }
         res.status(500).send(`Error: ${error.message}`);
     }
 });

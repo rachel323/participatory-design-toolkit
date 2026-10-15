@@ -7,7 +7,7 @@
 <body>
     <div class="top-bar">
         <a href="/" class="home-button">Back to home</a>
-        <form action="/stop-session" method="POST" class="top-right-form">
+        <form id="stopSessionForm" action="/stop-session" method="POST" class="top-right-form">
             <button type="submit" class="stop-button">Stop session</button>
         </form>
     </div>
@@ -312,6 +312,9 @@
 
             setMusicButtonState(filePath, false, activeTrack.buttonElement);
             activeMusic.delete(filePath);
+            logAction("STOP_MUSIC", {
+                soundFile: filePath
+            });
         }
 
         function playMusic(filePath, buttonElement = null) {
@@ -471,6 +474,7 @@
 
         document.addEventListener('keydown', (event) => {
 
+            if (isStoppingSession) return;
             if (event.repeat) return;
 
             const key = event.key.toLowerCase();
@@ -503,6 +507,10 @@
                         applyAudioSettingsToAllActiveTracks();
                         updateAudioDashboard();
                         console.log("Playback:", playbackRate.toFixed(2));
+                        logAction("AUDIO_SETTING_CHANGED", {
+                            setting: "playbackRate",
+                            value: playbackRate
+                        });
                         break;
 
 
@@ -512,6 +520,10 @@
                         applyAudioSettingsToAllActiveTracks();
                         updateAudioDashboard();
                         console.log("Playback:", playbackRate.toFixed(2));
+                        logAction("AUDIO_SETTING_CHANGED", {
+                            setting: "playbackRate",
+                            value: playbackRate
+                        });
                         break;
 
                     // Low-pass filter adjusted through arrows <- ->
@@ -521,6 +533,10 @@
                         applyAudioSettingsToAllActiveTracks();
                         updateAudioDashboard();
                         console.log("Low-pass:", lowpassFreq);
+                        logAction("AUDIO_SETTING_CHANGED", {
+                            setting: "lowpassFrequency",
+                            value: lowpassFreq
+                        });
                         break;
 
                     case "ArrowRight":
@@ -529,6 +545,10 @@
                         applyAudioSettingsToAllActiveTracks();
                         updateAudioDashboard();
                         console.log("Low-pass:", lowpassFreq);
+                        logAction("AUDIO_SETTING_CHANGED", {
+                            setting: "lowpassFrequency",
+                            value: lowpassFreq
+                        });
                         break;
 
                     // High-pass filter adjusted through Q and E keys
@@ -538,6 +558,10 @@
                         applyAudioSettingsToAllActiveTracks();
                         updateAudioDashboard();
                         console.log("High-pass:", highpassFreq);
+                        logAction("AUDIO_SETTING_CHANGED", {
+                            setting: "highpassFrequency",
+                            value: highpassFreq
+                        });
                         break;
 
                     // High-pass omlaag
@@ -547,6 +571,10 @@
                         applyAudioSettingsToAllActiveTracks();
                         updateAudioDashboard();
                         console.log("High-pass:", highpassFreq);
+                        logAction("AUDIO_SETTING_CHANGED", {
+                            setting: "highpassFrequency",
+                            value: highpassFreq
+                        });
                         break;
                 }
             }
@@ -632,19 +660,87 @@
         [1, 2, 3, 4].forEach((motorId) => {
             document.getElementById(`patternDuration-${motorId}`).addEventListener('input', () => updatePatternDisplay(motorId));
             document.getElementById(`patternInterval-${motorId}`).addEventListener('input', () => updatePatternDisplay(motorId));
+            const logPatternSettings = () => logAction("MOTOR_PATTERN_SETTINGS_CHANGED", {
+                motorId,
+                duration: Number(document.getElementById(`patternDuration-${motorId}`).value),
+                interval: Number(document.getElementById(`patternInterval-${motorId}`).value)
+            });
+            document.getElementById(`patternDuration-${motorId}`).addEventListener('change', logPatternSettings);
+            document.getElementById(`patternInterval-${motorId}`).addEventListener('change', logPatternSettings);
             updatePatternDisplay(motorId);
         });
         
         //----------------------------LOGGING---------------------------------
 
-       
-        function logAction(action, details = {}) {
-            fetch('/api/log', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ action, details })
-            }).catch(error => console.error('Error:', error));
+        const pendingLogRequests = new Set();
+        const failedLogActions = [];
+
+        async function sendLogAction(payload) {
+            try {
+                const response = await fetch('/api/log', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                if (!response.ok) {
+                    throw new Error(`Log request failed with status ${response.status}`);
+                }
+                return true;
+            } catch (error) {
+                console.error('Could not save dashboard action:', error);
+                return false;
+            }
         }
+
+        function logAction(action, details = {}) {
+            const payload = { action, details };
+            const request = sendLogAction(payload).then(saved => {
+                if (!saved) {
+                    failedLogActions.push(payload);
+                }
+                return saved;
+            });
+
+            pendingLogRequests.add(request);
+            request.then(() => pendingLogRequests.delete(request));
+            return request;
+        }
+
+        let isStoppingSession = false;
+        document.getElementById('stopSessionForm').addEventListener('submit', async (event) => {
+            if (isStoppingSession) {
+                event.preventDefault();
+                return;
+            }
+
+            event.preventDefault();
+            isStoppingSession = true;
+            const form = event.currentTarget;
+            const dashboardControls = document.querySelectorAll('#dashboardSections button, #dashboardSections input');
+            dashboardControls.forEach(control => {
+                control.disabled = true;
+            });
+
+            await Promise.all([...pendingLogRequests]);
+            const retryBatch = failedLogActions.splice(0);
+            const retryResults = await Promise.all(retryBatch.map(sendLogAction));
+            retryResults.forEach((saved, index) => {
+                if (!saved) {
+                    failedLogActions.push(retryBatch[index]);
+                }
+            });
+
+            if (failedLogActions.length > 0) {
+                isStoppingSession = false;
+                dashboardControls.forEach(control => {
+                    control.disabled = false;
+                });
+                alert('Some actions could not be saved to the log. Please try stopping the session again.');
+                return;
+            }
+
+            form.submit();
+        });
     </script>
 </body>
 </html>

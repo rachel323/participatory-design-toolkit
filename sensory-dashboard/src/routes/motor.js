@@ -1,6 +1,7 @@
 const express = require("express");
 const axios = require("axios");
 const router = express.Router();
+const { logAction } = require('../utils/logger');
 
 const motors = {
     1: "192.168.2.102", //de blauwe
@@ -53,6 +54,21 @@ router.post("/:id/vibrate", async (req, res) => {
             validateStatus: status => status >= 200 && status < 400
         });
 
+        try {
+            logAction(req, 'MOTOR_VIBRATE', {
+                motorId: req.params.id,
+                requestedDuration: req.body?.duration,
+                status: 'success'
+            });
+        } catch (logError) {
+            console.error('Motor vibration succeeded but could not be logged:', logError);
+            return res.status(500).json({
+                success: false,
+                actionSucceeded: true,
+                error: 'Motor vibration succeeded, but could not be logged'
+            });
+        }
+
         res.json({
             success: true
         });
@@ -60,6 +76,16 @@ router.post("/:id/vibrate", async (req, res) => {
     } catch (err) {
 
         console.error(`Motor ${req.params.id} vibration failed: ${err.message}`);
+        try {
+            logAction(req, 'MOTOR_VIBRATE', {
+                motorId: req.params.id,
+                requestedDuration: req.body?.duration,
+                status: 'failed',
+                error: err.message
+            });
+        } catch (logError) {
+            console.error('Could not write motor failure log:', logError);
+        }
 
         res.status(500).json({
             success: false,
@@ -94,6 +120,23 @@ router.post("/:id/pattern", async (req, res) => {
             validateStatus: status => status >= 200 && status < 400
         });
 
+        try {
+            logAction(req, 'MOTOR_PATTERN', {
+                motorId: req.params.id,
+                on,
+                duration,
+                interval,
+                status: 'success'
+            });
+        } catch (logError) {
+            console.error('Motor pattern update succeeded but could not be logged:', logError);
+            return res.status(500).json({
+                success: false,
+                actionSucceeded: true,
+                error: 'Motor pattern update succeeded, but could not be logged'
+            });
+        }
+
         res.json({
             success: true,
             on,
@@ -102,6 +145,18 @@ router.post("/:id/pattern", async (req, res) => {
         });
     } catch (err) {
         console.error(`Motor ${req.params.id} pattern failed: ${err.message}`);
+        try {
+            logAction(req, 'MOTOR_PATTERN', {
+                motorId: req.params.id,
+                on: req.body?.on,
+                duration: req.body?.duration,
+                interval: req.body?.interval,
+                status: 'failed',
+                error: err.message
+            });
+        } catch (logError) {
+            console.error('Could not write motor pattern failure log:', logError);
+        }
 
         res.status(500).json({
             success: false,
